@@ -1,0 +1,14 @@
+# OSX files
+**/.DS_Store
+
+# Execution results
+**/results/
+session_name.session
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
