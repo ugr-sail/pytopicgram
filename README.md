@@ -95,18 +95,18 @@ When running the `main.py` script, you can customize the behavior of the pipelin
 
 
 ### Using modules
-In the `examples` folder, you can find examples of running individual components of the pipeline. For instance, `snowballing.py` demonstrates how to use the snowballing technique to gather messages from related channels.
+In the `examples` folder, you can find examples of running individual components of the pipeline. For instance, `snowball.py` demonstrates how to use the snowball technique to gather messages from related channels.
 
-To run the snowballing example, use the following command:
+To run the snowball example, use the following command:
 
 ```
 cd pytopicgram
-python -m examples.snowballing 
+python -m examples.snowball 
     --api_id <TELEGRAM_API_ID> --api_hash <TELEGRAM_API_HASH> \ 
     --start_date 2024-08-30T00:00:00+00:00 --end_date 2024-08-31T23:59:59+00:00 
-    --channels_file ./examples/snowballing_channels_sample.csv 
-    --output_channels_file ./examples/results/snowballing_channels.csv 
-    --output_messages_file ./examples/results/snowballing_messages.json 
+    --channels_file ./examples/snowball_channels_sample.csv 
+    --output_channels_file ./examples/results/snowball_channels.csv 
+    --output_messages_file ./examples/results/snowball_messages.json 
     --max_rounds 3
 ```
 
@@ -115,19 +115,10 @@ python -m examples.snowballing
 - `--start_date`: The start date for collecting messages, in ISO 8601 format (e.g., `2024-08-01T00:00:00+00:00`).
 - `--end_date`: The end date for collecting messages, in ISO 8601 format (e.g., `2024-09-01T00:00:00+00:00`).
 - `--channels_file`: Path to the CSV file containing the list of channels to be processed.
-- `--output_channels_file`: Path to the output CSV file where the snowballing channels will be saved.
+- `--output_channels_file`: Path to the output CSV file where the snowball channels will be saved.
 - `--output_messages_file`: Path to the output JSON file where the collected messages will be saved.
 - `--openai_key`: Your OpenAI API key, used to generate topic descriptions in natural language (optional).
-- `--max_rounds`: The maximum number of rounds for the snowballing process, determining how many iterations of related channel gathering will be performed.
-
-## Authors
-
-- Juan Gómez Romero
-- Javier Cantón Correa
-- Rubén Pérez Mercado
-- Francisco Prados Abad
-- Miguel Molina-Solana
-- Waldo Fajardo
+- `--max_rounds`: The maximum number of rounds for the snowball process, determining how many iterations of related channel gathering will be performed.
 
 ## License
 

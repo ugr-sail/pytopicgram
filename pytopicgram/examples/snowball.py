@@ -1,9 +1,9 @@
 """
-This script performs snowballing to iteratively collect messages and recommended channels from Telegram.
+This script performs snowball crawl to iteratively collect messages and recommended channels from Telegram.
 
 Usage:
-python -m examples.snowballing --api_id <API_ID> --api_hash <API_HASH> \ 
-                               --initial_csv examples/snowballing_channels_sample.py \ 
+python -m examples.snowball    --api_id <API_ID> --api_hash <API_HASH> \ 
+                               --initial_csv examples/snowball_channels_sample.py \ 
                                --output_messages_file examples/results/messages.csv \
                                --output_channels_file examples/results/channels.csv \
                                --start_date 2024-08-01T00:00:00+00:00 --end_date 2024-09-01T00:00:00+00:00 \
@@ -22,8 +22,8 @@ Modules:
     - modules.crawler: Custom module for reading channels from CSV and processing channels.    
     
 Functions:
-    - snowballing(api_id, api_hash, initial_csv, start_date, end_date, output_file, max_rounds=3):
-        Perform snowballing to collect messages and recommended channels iteratively.
+    - snowball(api_id, api_hash, initial_csv, start_date, end_date, output_file, max_rounds=3):
+        Perform snowball crawl to collect messages and recommended channels iteratively.
 """
 
 import asyncio
@@ -42,9 +42,9 @@ from crawler import read_channels_from_csv, process_channels
 console = Console()
 
 # --------------------------------------------------------------------------------
-async def snowballing(api_id, api_hash, initial_csv, start_date, end_date, messages_csv, channels_csv, max_rounds=3):
+async def snowball(api_id, api_hash, initial_csv, start_date, end_date, messages_csv, channels_csv, max_rounds=3):
     """
-    Perform snowballing to collect messages and recommended channels iteratively.
+    Perform snowball crawl to collect messages and recommended channels iteratively.
 
     Parameters:
     - api_id (int): The API ID for the Telegram client.
@@ -54,7 +54,7 @@ async def snowballing(api_id, api_hash, initial_csv, start_date, end_date, messa
     - end_date (datetime.datetime): The end date for message retrieval.
     - messages_csv (str): The name of the output file for saving messages.
     - channels_csv (str): The name of the output file for saving channels.
-    - max_rounds (int): The maximum number of snowballing rounds. Default is 3.
+    - max_rounds (int): The maximum number of snowball rounds. Default is 3.
 
     Returns:
     None
@@ -71,7 +71,7 @@ async def snowballing(api_id, api_hash, initial_csv, start_date, end_date, messa
     round_counter = 1
 
     while round_counter <= max_rounds and not current_channels.empty:
-        print(f"\n[bold cyan]Snowballing Round {round_counter}/{max_rounds}")
+        print(f"\n[bold cyan]Snowball Round {round_counter}/{max_rounds}")
         
         # Run the process_channels function to collect messages and channel info
         print(f"[cyan]Processing {len(current_channels)} channels in round {round_counter}...")
@@ -112,20 +112,20 @@ async def snowballing(api_id, api_hash, initial_csv, start_date, end_date, messa
         round_counter += 1
 
         if new_channels_df.empty:
-            print("[green]No new channels found. Snowballing complete.")
+            print("[green]No new channels found. Snowball complete.")
             break
 
     # Save the complete list of channels processed and remove temp file
     all_channels.to_csv(channels_csv, index=False, quoting=csv.QUOTE_NONNUMERIC)
     os.remove(temp_path)
     
-    print(f"\n[bold green]Snowballing process finished.[/bold green] Messages of processed channels saved to [bold yellow]{messages_csv}[/bold yellow].")
+    print(f"\n[bold green]Snowball process finished.[/bold green] Messages of processed channels saved to [bold yellow]{messages_csv}[/bold yellow].")
     print(f"\n[bold green]Visited channels info saved to [bold yellow]{channels_csv}[/bold yellow].")
 
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 def main():    
-    parser = argparse.ArgumentParser(description="Run the snowballing process for Telegram channels.")
+    parser = argparse.ArgumentParser(description="Run the snowball process for Telegram channels.")
     parser.add_argument('--api_id', type=int, required=True, help='Your Telegram API ID')
     parser.add_argument('--api_hash', type=str, required=True, help='Your Telegram API hash')
     parser.add_argument('--channels_file', type=str, required=True, help='Path to your initial CSV')
@@ -133,7 +133,7 @@ def main():
     parser.add_argument('--output_messages_file', type=str, required=True, help='Desired output channels file path')
     parser.add_argument('--start_date', type=str, required=True, help='Start date in ISO format (e.g., 2024-08-01T00:00:00+00:00)')
     parser.add_argument('--end_date', type=str, required=True, help='End date in ISO format (e.g., 2024-09-01T00:00:00+00:00)')
-    parser.add_argument('--max_rounds', type=int, default=3, help='Maximum number of snowballing rounds')
+    parser.add_argument('--max_rounds', type=int, default=3, help='Maximum number of snowball rounds')
 
     args = parser.parse_args()
 
@@ -154,8 +154,8 @@ def main():
     os.makedirs(os.path.dirname(messages_csv), exist_ok=True)
     os.makedirs(os.path.dirname(channels_csv), exist_ok=True)
 
-    # Start the snowballing process
-    asyncio.run(snowballing(api_id, api_hash, initial_csv, start_date, end_date, messages_csv, channels_csv, max_rounds=max_rounds))
+    # Start the snowball process
+    asyncio.run(snowball(api_id, api_hash, initial_csv, start_date, end_date, messages_csv, channels_csv, max_rounds=max_rounds))
 
 if __name__ == "__main__":
     main()
