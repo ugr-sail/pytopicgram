@@ -89,7 +89,7 @@ def _configure_representation_model_OpenAI(api_key: str, nr_docs: int, model: st
     return representation_model
 
 # --------------------------------------------------------------------------------
-def train_bertopic_model(messages: list, nr_topics: int = 100, nr_docs: int = 10, openai_key: str = None, sample_ratio: float = None):
+def train_bertopic_model(messages: list, nr_topics: int = 100, nr_docs: int = 10, openai_key: str = None, sample_ratio: float = None, stopwords_lang: str = 'spanish'):
     """
     Trains a BERTopic model on the provided messages.
 
@@ -99,7 +99,8 @@ def train_bertopic_model(messages: list, nr_topics: int = 100, nr_docs: int = 10
     - nr_docs (int): The number of documents to use for OpenAI representation. Defaults to 10.
     - openai_key (str, optional): OpenAI API key for using OpenAI representation model. Defaults to None.
     - sample_ratio (float, optional): Ratio of messages to sample for training. If None or not in (0, 1), use all messages.
-
+    - stopwords_lang (str): The language of stopwords to use. Defaults to 'spanish'.
+    
     Returns:
     - tuple: A tuple containing:
         - BERTopic: The trained BERTopic model.
@@ -120,7 +121,7 @@ def train_bertopic_model(messages: list, nr_topics: int = 100, nr_docs: int = 10
     # Embeddings processing
     umap_model = UMAP(low_memory=True)
     nltk.download('stopwords')
-    vectorizer_model = CountVectorizer(stop_words=stopwords.words('spanish'))
+    vectorizer_model = CountVectorizer(stop_words=stopwords.words(stopwords_lang))
 
     # Select sample of messages
     if sample_ratio:
