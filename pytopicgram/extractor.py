@@ -81,7 +81,10 @@ def _configure_representation_model_OpenAI(api_key: str, nr_docs: int, model: st
     )
 
     # Change prompt to adapt to Spanish
-    representation_model.default_prompt_ = representation_model.default_prompt_ + "\nIMPORTANT: Please note that the documents will be in Spanish and your answer must be in Spanish."
+    # representation_model.default_prompt_ = representation_model.default_prompt_ + "\nIMPORTANT: Please note that the documents will be in Spanish and your answer must be in Spanish."
+
+    # Change prompt to adapt to the language used in the documents
+    representation_model.default_prompt_ = representation_model.default_prompt_ + "\nIMPORTANT: Please note that all the provided documents are in the same language. Also, the description must be in the same language of the provided documents."
 
     return representation_model
 
