@@ -7,7 +7,7 @@ pytopicgram is a Python library designed for extracting, processing, and topic m
 
 ## Features
 
-- **Fast and Flexible Message Crawling**: Efficiently connect to the Telegram API and retrieve messages from public channels using the [Telethon(https://docs.telethon.dev/en/stable/)] library.
+- **Fast and Flexible Message Crawling**: Efficiently connect to the Telegram API and retrieve messages from public channels using the [Telethon](https://docs.telethon.dev/en/stable/) library.
 - **Extended Channel Information Retrieval**: Gather detailed information about Telegram channels, including subscriber counts, creation dates, recommended channels, and more.
 - **Computation of Message Metrics**: Calculate various metrics such as virality ratios to gain insights into content reach and engagement.
 - **Out-of-the-Box BERTopic Integration**: Perform topic modeling seamlessly with the [BERTopic](https://maartengr.github.io/BERTopic/index.html) algorithm, leveraging embeddings from Large Language Models (LLMs).
