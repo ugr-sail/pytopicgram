@@ -123,6 +123,11 @@ python -m examples.snowball
 - `--openai_key`: Your OpenAI API key, used to generate topic descriptions in natural language (optional).
 - `--max_rounds`: The maximum number of rounds for the snowball process, determining how many iterations of related channel gathering will be performed.
 
+## More information
+A short video on the use of `pytopicgram`: [Watch the video on Google Drive](https://drive.google.com/file/d/1jk_b95r5dGzeNiXisPdQr4zwT1tudUIe/view?usp=share_link)
+
+Slides: [Check the slides](https://drive.google.com/file/d/1jlfTSWeXoWEuSKQnzxAL6VZ_aNfQB-Rw/view?usp=sharing)
+
 ## License
 
 This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
