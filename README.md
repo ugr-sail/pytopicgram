@@ -2,9 +2,12 @@
 
 pytopicgram is a Python library designed for extracting, processing, and topic modeling messages from Telegram channels. It provides a comprehensive pipeline for data collection, preprocessing, metrics calculation, natural language processing, and topic modeling, making it a powerful tool for researchers and analysts investigating public discourse on Telegram.
 
+## Citation
+*J. Gómez-Romero, J. Cantón-Correa, R. Pérez Mercado, F. Prados Abad, M. Molina-Solana, W. Fajardo*. **pytopicgram: A library for data extraction and topic modeling from Telegram channels**. September 2024. [![DOI:10.5281/zenodo.13863008](https://zenodo.org/badge/DOI/10.5281/zenodo.13863008.svg)](https://doi.org/10.5281/zenodo.13863008)
+
 ## Features
 
-- **Fast and Flexible Message Crawling**: Efficiently connect to the Telegram API and retrieve messages from public channels using the [Telethon(https://docs.telethon.dev/en/stable/)] library.
+- **Fast and Flexible Message Crawling**: Efficiently connect to the Telegram API and retrieve messages from public channels using the [Telethon](https://docs.telethon.dev/en/stable/) library.
 - **Extended Channel Information Retrieval**: Gather detailed information about Telegram channels, including subscriber counts, creation dates, recommended channels, and more.
 - **Computation of Message Metrics**: Calculate various metrics such as virality ratios to gain insights into content reach and engagement.
 - **Out-of-the-Box BERTopic Integration**: Perform topic modeling seamlessly with the [BERTopic](https://maartengr.github.io/BERTopic/index.html) algorithm, leveraging embeddings from Large Language Models (LLMs).
@@ -119,6 +122,11 @@ python -m examples.snowball
 - `--output_messages_file`: Path to the output JSON file where the collected messages will be saved.
 - `--openai_key`: Your OpenAI API key, used to generate topic descriptions in natural language (optional).
 - `--max_rounds`: The maximum number of rounds for the snowball process, determining how many iterations of related channel gathering will be performed.
+
+## More information
+A short video on the use of `pytopicgram`: [Watch the video on Google Drive](https://drive.google.com/file/d/1jk_b95r5dGzeNiXisPdQr4zwT1tudUIe/view?usp=share_link)
+
+Slides: [Check the slides](https://drive.google.com/file/d/1jlfTSWeXoWEuSKQnzxAL6VZ_aNfQB-Rw/view?usp=sharing)
 
 ## License
 
