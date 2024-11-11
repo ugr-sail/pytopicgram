@@ -95,7 +95,8 @@ async def process_channels(channels: pd.DataFrame, start_date: datetime.datetime
                            api_id: int, api_hash: str, 
                            output_file_name: str, channels_file_name: str = "channels_list_details.csv", 
                            append: bool = False,
-                           by_url: bool = True) -> None:
+                           by_url: bool = True,
+                           photos: bool = True) -> None:
     """
     Asynchronously processes a list of channels, fetching messages within a specified date range and saving them to an output file. 
 
@@ -109,6 +110,7 @@ async def process_channels(channels: pd.DataFrame, start_date: datetime.datetime
         api_hash (str): The API hash for the Telegram client.
         output_file_name (str): The name of the JSON file where the messages should be saved.
         append (bool, optional): Determines whether to append to the output file if it already exists. Defaults to False.
+        photos (bool, optional): Determines whether to download photos of not. Defaults to True.
 
     Returns:
         None
@@ -157,14 +159,19 @@ async def process_channels(channels: pd.DataFrame, start_date: datetime.datetime
         channel_dict['cluster'] = channel_cluster
 
         # - profile photo
-        os.makedirs(photo_folder, exist_ok=True)
-        path = await client.download_profile_photo(channel_url, file=f"{photo_folder}/{channel_name}.jpg")
-        channel_dict['photo_file'] = f"photos/{channel_name}.jpg"
+        if photos:
+            os.makedirs(photo_folder, exist_ok=True)
+            path = await client.download_profile_photo(channel_url, file=f"{photo_folder}/{channel_name}.jpg")
+            channel_dict['photo_file'] = f"photos/{channel_name}.jpg"
 
         # - suscriptors
-        full_info_obj = await client(GetFullChannelRequest(channel_url))
-        suscriptors = full_info_obj.full_chat.participants_count
-        channel_dict['suscriptors_api'] = suscriptors
+        try:
+            full_info_obj = await client(GetFullChannelRequest(channel_url))
+            suscriptors = full_info_obj.full_chat.participants_count
+            channel_dict['suscriptors_api'] = suscriptors
+        except Exception as e:
+            print(f"Cannot get channel info, probably misformed or non-reachable id {channel_url}")
+            continue # Skip to the next channel
 
         # - description
         description = full_info_obj.full_chat.about
@@ -228,7 +235,7 @@ async def process_channels(channels: pd.DataFrame, start_date: datetime.datetime
                             for col in header_names.values():
                                 msg_ext[col] = channel_info[col]
                             
-                        filtered_messages_in_channel.append(msg_ext)
+                            filtered_messages_in_channel.append(msg_ext)
                     else:
                         break                
                 
