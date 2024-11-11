@@ -5,6 +5,10 @@
 **/results/
 session_name.session
 
+# Configuration and extra files
+pytopicgram/config/channels.csv
+pytopicgram/config/snowball_channels.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -12,3 +16,4 @@ __pycache__/
 
 # C extensions
 *.so
+
