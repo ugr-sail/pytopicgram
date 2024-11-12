@@ -134,4 +134,4 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Acknowledgments
 
-This work was supported by the UDDOT project funded by the European Media Information Fund ([EMIF](https://gulbenkian.pt/emifund/)) managed by the Calouste Gulbenkian Foundation. The content may not necessarily reflect the position of EMIF and the Foundation.
+This work was supported by the UDDOT project funded by the European Media Information Fund ([EMIF](https://gulbenkian.pt/emifund/)) managed by the Calouste Gulbenkian Foundation, the XAI-DISINFODEMICS project (PLEC2021-007681) funded by MICIU/AEI/10.13039/501100011033 and by European Union NextGenerationEU/PRTR, and The Social Observatory of "la Caixa" Foundation.
