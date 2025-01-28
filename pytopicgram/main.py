@@ -22,6 +22,7 @@ import subprocess
 import os
 import shutil
 import json
+import time
 from rich import print
 
 # --------------------------------------------------------------------------------
@@ -48,6 +49,7 @@ def main():
     parser.add_argument('-a', '--append', action='store_true',    required=False, help="Append to the output file if included. Defaults to False.")
     parser.add_argument('-i', '--api_id',               type=int, required=True, help="The API ID for the Telegram client.")
     parser.add_argument('-p', '--api_hash',             type=str, required=True, help="The API hash for the Telegram client.")
+    parser.add_argument('-de', '--delimiter',           type=str, required=False, default=",", help="Delimiter for channels CSV file.")
     
     # Add the preprocessor arguments
     parser.add_argument('-pi', '--preprocessor_input',  type=str, required=False, default=results_folder + "channel_messages.json", help="The JSON input file for the preprocessor containing the messages obtained with the crawler. Defaults to results/datetime/channel_messages.json")
@@ -94,6 +96,9 @@ def main():
     parser.add_argument('-nr', '--num_reduced_topics',  type=int, required=False, default=100, help="Number of topics to reduce to. Defaults to 100.")
     parser.add_argument('-vv', '--generate_viz',        action="store_true", help="Generate BERTopic visualizations for complete model.")
 
+    # Add the profiler arguments
+    parser.add_argument('-pr', '--profiling', action='store_true', help="Enable profiling to make run_process not silent.")
+
     # Parse the arguments
     args = parser.parse_args()
 
@@ -108,6 +113,7 @@ def main():
     append = args.append
     api_id = args.api_id
     api_hash = args.api_hash
+    delimiter = args.delimiter
 
     # Preprocessor arguments 
     preprocessor_input_file_path = args.preprocessor_input
@@ -154,6 +160,9 @@ def main():
     n_reduced_topics = args.num_reduced_topics
     viewer_generate_viz = args.generate_viz
 
+    # Profiler arguments
+    profiler_silent = args.profiling
+
     if crawler_output_file_path != preprocessor_input_file_path:
         print("[WARNING] The output of the executed crawler will NOT be passed to the preprocessor. Make sure this is expected")
 
@@ -181,6 +190,13 @@ def main():
     extractor       = scripts_folder + "extractor.py"
     viewer          = scripts_folder + "viewer.py"
 
+    def run_subprocess(command):
+        start_time = time.time()
+        subprocess.run(command)
+        end_time = time.time()
+        if not profiler_silent:
+            print(f"Execution time for {' '.join(command)}: {end_time - start_time:.2f} seconds")
+
     if api_id and api_hash:
         # Execute the crawler
         args = [
@@ -188,14 +204,14 @@ def main():
             "-s", start_date_str,
             "-e", end_date_str,
             "-o", crawler_output_file_path,
-
             "-i", str(api_id),
-            "-p", api_hash
+            "-p", api_hash,
+            "-d", delimiter
         ]
         if append:
             args.append("-a")
 
-        subprocess.run(["python", crawler] + args)
+        run_subprocess(["python", crawler] + args)
     else:
         print("Missing api_id and/or api_hash: crawler cannot be executed.")
 
@@ -217,7 +233,7 @@ def main():
             args.append("-d")
         if capture_mentions:
             args.append("-cm")
-        subprocess.run(["python", preprocessor] + args)
+        run_subprocess(["python", preprocessor] + args)
     else:
         print(f"{preprocessor_input_file_path} does not exist. preprocessor cannot be executed.")
 
@@ -229,8 +245,9 @@ def main():
             "-f", metrics_field,
             "-n", str(metrics_neighbors),
             "-a", str(metrics_alpha),
-            "-m", str(metrics_min_threshold)        ]
-        subprocess.run(["python", metrics] + args)
+            "-m", str(metrics_min_threshold)
+        ]
+        run_subprocess(["python", metrics] + args)
     else:
         print(f"{metrics_input_file_path} does not exist. metrics calculation cannot be executed.")
 
@@ -243,7 +260,7 @@ def main():
         ]
         if nlp_split:
             args.append("-s")
-        subprocess.run(["python", nlp] + args)
+        run_subprocess(["python", nlp] + args)
     else:
         print(f"{nlp_input_file_path} does not exist. nlp cannot be executed.")
 
@@ -263,7 +280,7 @@ def main():
         if openai_key:
             args.append("-k")
             args.append(openai_key)
-        subprocess.run(["python", extractor] + args)
+        run_subprocess(["python", extractor] + args)
     else:
         print(f"{extractor_input_file_path} does not exist. extractor cannot be executed.")
 
@@ -279,7 +296,7 @@ def main():
         ]
         if viewer_generate_viz:
             args.append("-v")
-        subprocess.run(["python", viewer] + args)
+        run_subprocess(["python", viewer] + args)
     else:
         print(f"{viewer_model_file_path} and/or {viewer_input_file_path} and/or {viewer_training_file_path} do not exist. viewer cannot be executed.")
 

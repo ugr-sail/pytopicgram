@@ -284,6 +284,7 @@ def main():
     parser.add_argument('-a', '--append', action='store_true', required=False, help="Append to the output file if included. Defaults to False.")
     parser.add_argument('-i', '--api_id', type=int, required=True, help="The API ID for the Telegram client.")
     parser.add_argument('-p', '--api_hash', type=str, required=True, help="The API hash for the Telegram client.")
+    parser.add_argument('-d', '--delimiter', type=str, required=False, default=",", help="The API hash for the Telegram client.")
     
     # Parse the arguments
     args = parser.parse_args()
@@ -295,10 +296,11 @@ def main():
     append = args.append
     api_id = args.api_id
     api_hash = args.api_hash
+    delimiter = args.delimiter
 
     # Get channel list from CSV file
     try:
-        channels_list = read_channels_from_csv(csv_file_path, delimiter=',')
+        channels_list = read_channels_from_csv(csv_file_path, delimiter=delimiter)
         print(f"Read {len(channels_list)} channels from {csv_file_path}")
     except FileNotFoundError:
         print(f"Error: The file {csv_file_path} does not exist.")
