@@ -74,6 +74,8 @@ import tldextract
 from regex_patterns import AUX_URL
 from regex_patterns import MENTIONS
 
+from preprocessing_extra import preprocessing_function
+
 from tqdm import tqdm
 from rich import print
 
@@ -438,6 +440,9 @@ def main():
 
     if capture_mentions:
         extract_mentions(df_selected, message_column)
+
+    # Perform additional preprocessing
+    preprocessing_function(df_selected)
 
     # Remove messages that are empty after removing elements
     df_selected.dropna(subset=[message_column], ignore_index=True, inplace=True)
