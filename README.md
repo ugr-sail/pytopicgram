@@ -17,7 +17,7 @@ pytopicgram is a Python library designed for extracting, processing, and topic m
 ## Installation
 
 ### Direct
-To install the required dependencies, run:
+To install the required dependencies and run:
 
 ```
 pip install -r requirements.txt
