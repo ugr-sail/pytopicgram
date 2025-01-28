@@ -161,7 +161,9 @@ def main():
     viewer_generate_viz = args.generate_viz
 
     # Profiler arguments
-    profiler_silent = args.profiling
+    profiler = args.profiling
+    if profiler:        
+        print("[[green]INFO[/]] Time ticking is enabled.")
 
     if crawler_output_file_path != preprocessor_input_file_path:
         print("[WARNING] The output of the executed crawler will NOT be passed to the preprocessor. Make sure this is expected")
@@ -194,7 +196,7 @@ def main():
         start_time = time.time()
         subprocess.run(command)
         end_time = time.time()
-        if not profiler_silent:
+        if profiler:
             print(f"Execution time for {' '.join(command)}: {end_time - start_time:.2f} seconds")
 
     if api_id and api_hash:
