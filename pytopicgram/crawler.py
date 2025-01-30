@@ -4,21 +4,23 @@ This module facilitates the extraction of messages from Telegram channels. It of
 The module can operate as a standalone script or be imported into other scripts for further analysis or processing.
 
 Functions:
+
 - read_channels_from_csv: Reads channel information from a CSV file.
-  - Parameters:
-    - file_path (str): The path to the CSV file containing the channel information.
+    - Parameters:
+        - file_path (str): The path to the CSV file containing the channel information.
 
 - process_channels: Processes each channel, retrieves messages within the specified date range, and saves them to an output file.
-  - Parameters:
-    - channels_list (list): A list of channels to be processed.
-    - start_date (str): The start date for message retrieval in ISO format.
-    - end_date (str): The end date for message retrieval in ISO format.
-    - api_id (int): The Telegram API ID.
-    - api_hash (str): The Telegram API hash.
-    - output_file_name (str): The name of the output file where messages will be saved.
-    - append (bool, optional): Whether to append to the output file if it exists. Defaults to False.
+    - Parameters:
+        - channels_list (list): A list of channels to be processed.
+        - start_date (str): The start date for message retrieval in ISO format.
+        - end_date (str): The end date for message retrieval in ISO format.
+        - api_id (int): The Telegram API ID.
+        - api_hash (str): The Telegram API hash.
+        - output_file_name (str): The name of the output file where messages will be saved.
+        - append (bool, optional): Whether to append to the output file if it exists. Defaults to False.
 
 Dependencies:
+
 - telethon: Telegram client library for Python.
 - asyncio: Library to write concurrent code using the async/await syntax.
 - csv: Module to read and write tabular data in CSV format.
@@ -42,7 +44,7 @@ import pandas as pd
 import json
 import re
 from rich import print
-from regex_patterns import AUX_URL
+from . import regex_patterns
 
 # The names and URLs of every channel must be present in the CSV
 channel_name_csv = 'Channel'
@@ -130,7 +132,7 @@ async def process_channels(channels: pd.DataFrame, start_date: datetime.datetime
     url_extractor = urlextract.URLExtract()
     # If the URL is right after a punctuation mark, it is not included
     # in the URL pattern, so we need to extract it separately
-    url_pattern = re.compile(AUX_URL, re.IGNORECASE)
+    url_pattern = re.compile(regex_patterns.AUX_URL, re.IGNORECASE)
 
     for index, channel_info in channels.iterrows():
         channel_name = channel_info[channel_name_df]

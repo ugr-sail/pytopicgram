@@ -4,27 +4,28 @@ This module facilitates the calculation of various metrics for a dataset. It inc
 The module can be executed as an independent script or imported into other scripts for further analysis or processing.
 
 Functions:
-- virality: Computes the virality of a dataset as defined in Nobari et al. [1].
-  - Parameters:
-    - df (pd.DataFrame): The DataFrame containing the data to be analyzed.
-    - field (str): The field to be used for calculating the virality ratio. Default is 'views'.
-    - n (int): The number of neighbors to be considered. Default is 5.
-    - alpha (float): The threshold used for the comparison of the virality and its neighbors. Default is 0.2.
-    - min_threshold (int): The minimum threshold for the metric considered. Default is 1000.
 
+- virality: Computes the virality of a dataset as defined in Nobari et al. [1].
+    - Parameters:
+        - df (pd.DataFrame): The DataFrame containing the data to be analyzed.
+        - field (str): The field to be used for calculating the virality ratio. Default is 'views'.
+        - n (int): The number of neighbors to be considered. Default is 5.
+        - alpha (float): The threshold used for the comparison of the virality and its neighbors. Default is 0.2.
+        - min_threshold (int): The minimum threshold for the metric considered. Default is 1000.
 - forwards_ratio: Computes the forwards ratio of each record in a dataset.
-  - Parameters:
-    - df (pd.DataFrame): The DataFrame containing the data to be analyzed.
+    - Parameters:
+        - df (pd.DataFrame): The DataFrame containing the data to be analyzed.
 
 - engagement_ratio: Computes the engagement ratio of each record in a dataset.
-  - Parameters:
-    - df (pd.DataFrame): The DataFrame containing the data to be analyzed.
+    - Parameters:
+        - df (pd.DataFrame): The DataFrame containing the data to be analyzed.
 
 - reach: Computes the reach of each record in a dataset.
-  - Parameters:
-    - df (pd.DataFrame): The DataFrame containing the data to be analyzed.
+    - Parameters:
+        - df (pd.DataFrame): The DataFrame containing the data to be analyzed.
 
 Dependencies:
+
 - pandas: Library for data manipulation and analysis.
 - numpy: Library for numerical computing.
 - tqdm: Library for adding progress meters to loops.
@@ -37,7 +38,7 @@ import numpy as np
 import tqdm
 import json
 import argparse
-from nlp import read_dataframe_from_csv_file, write_to_csv_file
+from . import nlp
 from rich import print
 
 def virality(df: pd.DataFrame, field: str = 'views', n: int = 5, alpha: float = 0.2, min_threshold: int = 1000) -> pd.DataFrame:
@@ -218,7 +219,7 @@ def main():
     parser.add_argument('-m', '--min_threshold', type=int, default=1000, help='Minimum threshold for the metric considered.')
     args = parser.parse_args()
 
-    df = read_dataframe_from_csv_file(args.input)
+    df = nlp.read_dataframe_from_csv_file(args.input)
     df = filter_and_convert(df)
     
     df = forwards_ratio(df)
@@ -226,7 +227,7 @@ def main():
     df = reach(df)
     df = virality(df, field=args.field, n=args.neighbors, alpha=args.alpha, min_threshold=args.min_threshold)
 
-    write_to_csv_file(df, args.output)
+    nlp.write_to_csv_file(df, args.output)
 
 if __name__ == '__main__':
     main()

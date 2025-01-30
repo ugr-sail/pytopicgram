@@ -2,6 +2,7 @@
 This module is designed for preprocessing messages extracted from Telegram channels. It provides tools to extract messages from a JSON file created by crawler.py, convert them into a pandas DataFrame, and perform various preprocessing tasks.
 
 Key features include:
+
 - Reading and flattening JSON data into a pandas DataFrame
 - Selecting specific features from the DataFrame
 - Filtering messages by channel
@@ -12,39 +13,41 @@ Usage:
 This module can be used as a standalone script or integrated into other scripts for further analysis or manipulation.
 
 Functions:
+
 - read_dataframe_from_json_file: Transforms JSON data into a flattened pandas DataFrame.
-  - Parameters:
-    - file_path (str): The path to the JSON file containing the messages.
-    - stop_after (int, optional): The number of records to read from the JSON file. Defaults to None.
+    - Parameters:
+        - file_path (str): The path to the JSON file containing the messages.
+        - stop_after (int, optional): The number of records to read from the JSON file. Defaults to None.
 
 - feature_selection: Chooses specific features based on a given list.
-  - Parameters:
-    - df (pd.DataFrame): The DataFrame containing the messages.
-    - feature_list_file (str): The path to the CSV file containing the list of features to be selected.
+    - Parameters:
+        - df (pd.DataFrame): The DataFrame containing the messages.
+        - feature_list_file (str): The path to the CSV file containing the list of features to be selected.
 
 - channel_selection: Filters messages by channel.
-  - Parameters:
-    - df (pd.DataFrame): The DataFrame containing the messages.
-    - channel_list_file (str): The path to the CSV file containing the list of channels to be selected.
+    - Parameters:
+        - df (pd.DataFrame): The DataFrame containing the messages.
+        - channel_list_file (str): The path to the CSV file containing the list of channels to be selected.
 
 - write_df_to_csv_file: Saves the processed DataFrame to a CSV file.
-  - Parameters:
-    - df (pd.DataFrame): The DataFrame to be written to the file.
-    - output_file_path (str): The path to the output CSV file.
+    - Parameters:
+        - df (pd.DataFrame): The DataFrame to be written to the file.
+        - output_file_path (str): The path to the output CSV file.
 
 - process_text: Extracts various text elements from messages.
-  - Parameters:
-    - df (pd.DataFrame): The DataFrame containing the messages.
-    - message_column (str): The name of the column in the DataFrame that contains the text to be processed.
-    - capture_urls (bool): Whether to extract URLs from the text.
-    - capture_emojis (bool): Whether to extract emojis from the text.
-    - capture_mentions (bool): Whether to extract mentions from the text.
+    - Parameters:
+        - df (pd.DataFrame): The DataFrame containing the messages.
+        - message_column (str): The name of the column in the DataFrame that contains the text to be processed.
+        - capture_urls (bool): Whether to extract URLs from the text.
+        - capture_emojis (bool): Whether to extract emojis from the text.
+        - capture_mentions (bool): Whether to extract mentions from the text.
 
 - process_reactions: Converts message reactions into a JSON string.
-  - Parameters:
-    - reactions (dict): The reactions data as a dictionary.
+    - Parameters:
+        - reactions (dict): The reactions data as a dictionary.
 
 Dependencies:
+
 - argparse: Command-line argument parsing
 - csv: CSV file handling
 - json: JSON data parsing
@@ -71,10 +74,8 @@ import re
 import urlextract
 import tldextract
 
-from regex_patterns import AUX_URL
-from regex_patterns import MENTIONS
-
-from preprocessing_extra import preprocessing_function
+from . import regex_patterns
+from . import preprocessing_extra
 
 from tqdm import tqdm
 from rich import print
@@ -236,7 +237,7 @@ def extract_urls(df: pd.DataFrame, message_column: str, remove_from_text: bool =
 
     # If the URL is right after a punctuation mark, it is not included
     # in the URL pattern, so we need to extract it separately
-    url_pattern = re.compile(AUX_URL, re.IGNORECASE)
+    url_pattern = re.compile(regex_patterns.AUX_URL, re.IGNORECASE)
     space_pattern = re.compile(r"\s+")
 
     for _, row in tqdm(df.iterrows(), total=df.shape[0], desc="Extracting URLs"):
@@ -280,7 +281,7 @@ def extract_mentions(df: pd.DataFrame, message_column: str, remove_from_text: bo
     Returns:
     - None: The function modifies the DataFrame in-place by adding a new column 'extracted_mentions' and optionally removing mentions from the original messages.
     """
-    regex = re.compile(MENTIONS, re.IGNORECASE)
+    regex = re.compile(regex_patterns.MENTIONS, re.IGNORECASE)
 
     def _extract_mention(message):
         matches = regex.findall(message)
@@ -442,7 +443,7 @@ def main():
         extract_mentions(df_selected, message_column)
 
     # Perform additional preprocessing
-    preprocessing_function(df_selected)
+    preprocessing_extra.preprocessing_function(df_selected)
 
     # Remove messages that are empty after removing elements
     df_selected.dropna(subset=[message_column], ignore_index=True, inplace=True)

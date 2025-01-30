@@ -2,9 +2,12 @@
 This module provides tools for viewing and analyzing the results of a BERTopic model. It includes functionality to load a pre-trained BERTopic model, analyze text data from CSV files, and output various insights such as topic information and document-specific details.
 
 Functions:
+
 - main(): The main function that parses command line arguments, loads the model and data, and performs topic analysis and reduction.
 
+
 Dependencies:
+
 - argparse: For parsing command line arguments.
 - os: For file path manipulations.
 - csv: For handling CSV file errors.

@@ -1,5 +1,5 @@
-api
-====
+Source code
+===========
 
 .. autosummary::
    :toctree: generated

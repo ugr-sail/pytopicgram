@@ -2,20 +2,22 @@
 This module provides functions for natural language processing (NLP) tasks, including reading data from CSV files, applying NLP techniques to text data, and performing sentiment analysis. The functions can be used as standalone scripts or integrated into other Python programs for text data processing and analysis.
 
 Functions:
+
 - read_dataframe_from_csv_file: Reads a CSV file and converts it into a pandas DataFrame.
-  - Parameters:
-    - csv_file_path (str): The file path to the CSV file.
+    - Parameters:
+        - csv_file_path (str): The file path to the CSV file.
 
 - apply_nlp: Applies NLP processing to a DataFrame containing messages.
-  - Parameters:
-    - df (pd.DataFrame): The DataFrame containing the messages.
-    - message_column (str): The name of the column in the DataFrame that contains the text to be processed.
-    - nlp_message_column (str): The name of the column to store the processed text.
-    - model (str, optional): The SpaCy model to use for NLP processing. Defaults to 'es_core_news_sm'.
-    - sentence_splitter (bool, optional): Whether to split the text into sentences. Defaults to False.
-    - sentence_min_char (int, optional): The minimum number of characters for a sentence to be considered valid. Defaults to 50.
+    - Parameters:
+        - df (pd.DataFrame): The DataFrame containing the messages.
+        - message_column (str): The name of the column in the DataFrame that contains the text to be processed.
+        - nlp_message_column (str): The name of the column to store the processed text.
+        - model (str, optional): The SpaCy model to use for NLP processing. Defaults to 'es_core_news_sm'.
+        - sentence_splitter (bool, optional): Whether to split the text into sentences. Defaults to False.
+        - sentence_min_char (int, optional): The minimum number of characters for a sentence to be considered valid. Defaults to 50.
 
 Dependencies:
+
 - pandas: Provides high-performance, easy-to-use data structures and data analysis tools.
 - spacy: Offers advanced natural language processing capabilities in Python.
 - spacytextblob: Extends spaCy with TextBlob for sentiment analysis.
@@ -33,7 +35,7 @@ from spacytextblob.spacytextblob import SpacyTextBlob
 from tqdm import tqdm
 from rich import print
 import re
-from regex_patterns import NUMBERED_LIST
+from . import regex_patterns
 
 # --------------------------------------------------------------------------------
 def read_dataframe_from_csv_file(csv_file_path: str) -> pd.DataFrame:
@@ -109,7 +111,7 @@ def apply_nlp(df: pd.DataFrame, message_column: str, nlp_message_column: str, mo
             sentences = [sent.text.strip() for sent in doc.sents]
         else:
             # - enumerations are split even if sentence_splitter is False
-            enumeration_matches = re.findall(NUMBERED_LIST, msg_text, re.DOTALL)
+            enumeration_matches = re.findall(regex_patterns.NUMBERED_LIST, msg_text, re.DOTALL)
             if enumeration_matches:
                 sentences = enumeration_matches
             else:
