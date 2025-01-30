@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pytopicgram"
+version = "0.1.0"
+description = "Un paquete para análisis de tópicos"
+authors = [{name = "SAIL", email = "sail@ugr.es"}]
+dependencies = [
+    "sphinx",
+    "pandas",
+    "numpy",
+    "scikit-learn",
+    "matplotlib",
+    "seaborn",
+    "nltk",
+    "gensim",
+    "pyLDAvis",
+    "tqdm",
+    "argparse",
+    "datetime",
+    "urlextract",
+    "openai",
+    "spacy",
+    "spacytextblob",
+    "bertopic",
+    "telethon",
+    "tiktoken",
+    "tldextract",
+    "emoji"
+]
+
+classifiers=[
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence"
+]
+
+[tool.setuptools]
+packages = ["pytopicgram"]
