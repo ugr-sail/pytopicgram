@@ -14,9 +14,8 @@ pytopicgram documentation
    :caption: Contents:
 
    overview
-   modules
+   api
    license
-
 
 
 
