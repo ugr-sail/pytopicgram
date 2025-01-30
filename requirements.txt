@@ -20,7 +20,7 @@ MarkupSafe==2.1.5
 mdurl==0.1.2
 murmurhash==1.0.10
 numpy==1.26.4
-openai==1.46.0
+openai==1.60.2
 packaging==24.1
 pandas==2.2.2
 platformdirs==4.3.2

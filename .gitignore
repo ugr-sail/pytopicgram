@@ -4,6 +4,7 @@
 # Execution results
 **/results/
 session_name.session
+session_name.session-journal
 
 # Configuration and extra files
 pytopicgram/config/channels.csv
