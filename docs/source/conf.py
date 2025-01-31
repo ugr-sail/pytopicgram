@@ -23,9 +23,12 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.autodoc',      # Documentación automática de docstrings
     'sphinx.ext.napoleon',     # Soporte para Google y NumPy docstrings
-    'sphinx.ext.viewcode',     # Agregar enlaces al código fuente
-    'myst_parser'
+    'sphinx.ext.viewcode'     # Agregar enlaces al código fuente
 ]
+
+autosummary_generate = True  # Permite generar los archivos automáticamente
+#autosummary_generate_overwrite = False
+
 
 templates_path = ['_templates']
 exclude_patterns = []

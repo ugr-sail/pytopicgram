@@ -49,6 +49,7 @@ def virality(df: pd.DataFrame, field: str = 'views', n: int = 5, alpha: float = 
     If the virality ratio is greater than a threshold `alpha`, the observation is considered viral.
 
     Parameters:
+
     - df (pd.DataFrame): The DataFrame containing the data to be analyzed.
     - field (str): The field to be used for calculating the virality ratio. Default is 'views'.
     - n (int): The number of neighbors to be considered. Default is 5.
@@ -57,13 +58,14 @@ def virality(df: pd.DataFrame, field: str = 'views', n: int = 5, alpha: float = 
     - topic (str): The topic ID to be considered for the analysis. Default is None.
 
     Returns:
+
     - pd.DataFrame: A new DataFrame containing three new columns
         - `virality`: The virality of each record.
         - `virality_win_sz`: The difference in time between the first and last neighbor (self included).
         - `is_viral`: Whether the record is considered viral or not.
 
     [1]: Arash Dargahi Nobari, Malikeh Haj Khan Mirzaye Sarraf, Mahmood Neshati, Farnaz Erfanian Daneshvar.
-    Characteristics of viral messages on Telegram; The world’s largest hybrid public and private messenger.
+    Characteristics of viral messages on Telegram; The world's largest hybrid public and private messenger.
     Expert Systems with Applications, (https://doi.org/10.1016/j.eswa.2020.114303).
     """
 
