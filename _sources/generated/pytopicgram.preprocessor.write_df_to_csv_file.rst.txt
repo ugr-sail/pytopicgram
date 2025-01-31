@@ -1,0 +1,6 @@
+pytopicgram.preprocessor.write\_df\_to\_csv\_file
+=================================================
+
+.. currentmodule:: pytopicgram.preprocessor
+
+.. autofunction:: write_df_to_csv_file

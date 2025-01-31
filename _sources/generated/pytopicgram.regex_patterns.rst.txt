@@ -1,0 +1,12 @@
+pytopicgram.regex_patterns 
+==========================
+
+.. automodule:: pytopicgram.regex_patterns
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree:
+   :recursive:   
+
+   

@@ -1,0 +1,6 @@
+pytopicgram.preprocessor.extract\_mentions
+==========================================
+
+.. currentmodule:: pytopicgram.preprocessor
+
+.. autofunction:: extract_mentions

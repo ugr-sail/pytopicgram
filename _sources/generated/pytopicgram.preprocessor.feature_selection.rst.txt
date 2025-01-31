@@ -1,0 +1,6 @@
+pytopicgram.preprocessor.feature\_selection
+===========================================
+
+.. currentmodule:: pytopicgram.preprocessor
+
+.. autofunction:: feature_selection

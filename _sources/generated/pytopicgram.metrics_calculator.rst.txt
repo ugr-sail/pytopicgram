@@ -1,0 +1,24 @@
+pytopicgram.metrics_calculator 
+==============================
+
+.. automodule:: pytopicgram.metrics_calculator
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree:
+   :recursive:   
+
+   
+      engagement_ratio
+   
+      filter_and_convert
+   
+      forwards_ratio
+   
+      main
+   
+      reach
+   
+      virality
+   

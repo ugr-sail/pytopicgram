@@ -1,0 +1,6 @@
+pytopicgram.metrics\_calculator.reach
+=====================================
+
+.. currentmodule:: pytopicgram.metrics_calculator
+
+.. autofunction:: reach

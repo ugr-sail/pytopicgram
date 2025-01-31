@@ -1,0 +1,31 @@
+﻿pytopicgram 
+===========
+
+.. automodule:: pytopicgram
+
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :template: mymodule.rst
+   :recursive:   
+
+   
+      crawler
+   
+      extractor
+   
+      main
+   
+      metrics_calculator
+   
+      nlp
+   
+      preprocessing_extra
+   
+      preprocessor
+   
+      regex_patterns
+   
+      viewer
+   

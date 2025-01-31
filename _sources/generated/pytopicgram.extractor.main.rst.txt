@@ -1,0 +1,6 @@
+pytopicgram.extractor.main
+==========================
+
+.. currentmodule:: pytopicgram.extractor
+
+.. autofunction:: main

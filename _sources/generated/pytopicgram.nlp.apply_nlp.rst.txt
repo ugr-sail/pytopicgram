@@ -1,0 +1,6 @@
+pytopicgram.nlp.apply\_nlp
+==========================
+
+.. currentmodule:: pytopicgram.nlp
+
+.. autofunction:: apply_nlp

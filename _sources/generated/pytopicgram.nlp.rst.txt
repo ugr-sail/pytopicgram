@@ -1,0 +1,20 @@
+pytopicgram.nlp 
+===============
+
+.. automodule:: pytopicgram.nlp
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree:
+   :recursive:   
+
+   
+      apply_nlp
+   
+      main
+   
+      read_dataframe_from_csv_file
+   
+      write_to_csv_file
+   

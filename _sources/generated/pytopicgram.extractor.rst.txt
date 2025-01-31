@@ -1,0 +1,18 @@
+pytopicgram.extractor 
+=====================
+
+.. automodule:: pytopicgram.extractor
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree:
+   :recursive:   
+
+   
+      main
+   
+      read_messages_from_csv
+   
+      train_bertopic_model
+   

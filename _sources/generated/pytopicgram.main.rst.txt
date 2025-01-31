@@ -1,0 +1,14 @@
+pytopicgram.main 
+================
+
+.. automodule:: pytopicgram.main
+
+.. rubric:: Functions
+
+.. autosummary::
+   :toctree:
+   :recursive:   
+
+   
+      main
+   
