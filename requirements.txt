@@ -11,7 +11,7 @@ cymem==2.0.8
 emoji==2.12.1
 filelock==3.16.0
 idna==3.8
-Jinja2==3.1.4
+Jinja2==3.1.5
 langcodes==3.4.0
 language_data==1.2.0
 marisa-trie==1.2.0
