@@ -1,19 +1,10 @@
 """
 This module is designed to automatically execute the crawler -> preprocessor -> metrics -> extractor -> viewer pipeline
 
-Example of command-line:
-python executor.py -i <TELEGRAM_API_ID> -p <TELEGRAM_API_HASH>
+.. code-block:: bash
 
-Dependencies
-- crawler.py
-- preprocessor.py
-- metrics_calculator.py
-- extractor.py
-- viewer.py
+    python executor.py -i <TELEGRAM_API_ID> -p <TELEGRAM_API_HASH>
 
-- argparse: Parser for command-line options, arguments, and sub-commands.
-- subprocess: Execute different Python scripts
-- shutil: Copy a file
 """
 
 import argparse
@@ -28,6 +19,102 @@ from rich import print
 # --------------------------------------------------------------------------------
 # --------------------------------------------------------------------------------
 def main():
+    """
+    Main function to execute the pipeline stages: crawler, preprocessor, metrics, extractor, and viewer.
+
+    This function sets up an argument parser to handle command-line arguments for each stage of the pipeline.
+    It orchestrates the execution of the stages in sequence, ensuring that the output of one stage is used as
+    the input for the next.
+
+    Command-line Arguments:
+
+    - **-d, --description**: 
+      A sentence that describes this execution, for instance, the reason why it was executed.
+
+    - **-ch, --channels_file**: 
+      The path to the CSV file containing the channel list.
+
+    - **-s, --start_date**: 
+      The start date in the format 'YYYY-MM-DDTHH:MM:SS+00:00'. Defaults to today's midnight.
+
+    - **-e, --end_date**: 
+      The end date in the format 'YYYY-MM-DDTHH:MM:SS+00:00'. Defaults to now.
+
+    - **-co, --crawler_output**: 
+      The JSON output file for the messages obtained with the crawler. Defaults to results/datetime/channel_messages.json.
+
+    - **-a, --append**: 
+      Append to the output file if included. Defaults to False.
+
+    - **-i, --api_id**: 
+      The API ID for the Telegram client.
+
+    - **-p, --api_hash**: 
+      The API hash for the Telegram client.
+
+    - **-de, --delimiter**: 
+      Delimiter for channels CSV file.
+
+    - **-pi, --preprocessor_input**: 
+      The JSON input file for the preprocessor containing the messages obtained with the crawler. Defaults to results/datetime/channel_messages.json.
+
+    - **-po, --preprocessor_output**: 
+      The CSV output file for the preprocessor output data. Defaults to results/datetime/messages_preprocessed.csv.
+
+    - **-l, --list-feature**: 
+      The CSV file containing the list of features to be selected.
+
+    - **-c, --list-channel**: 
+      The CSV file containing the list of channels to be selected.
+
+    - **-nl, --limit**: 
+      Limit preprocessing to the first n records. Defaults to 0, which results in all records.
+
+    - **-pt, --preprocessor_text**: 
+      The name of the column in the DataFrame that contains the text to be processed.
+
+    - **-cu, --capture_urls**: 
+      Capture URLs from the text.
+
+    - **-ce, --capture_emojis**: 
+      Capture emojis from the text.
+
+    - **-ad, --add_descriptions**: 
+      Add media descriptions to text when links are present.
+
+    - **-cm, --capture_mentions**: 
+      Capture users or channels mentioned in the message.
+
+    - **-mi, --metrics_input_file_path**: 
+      Path to the input CSV file for the metrics calculation.
+
+    - **-mo, --metrics_output_file_path**: 
+      Path to the output CSV file for the metrics calculation.
+
+    - **-mf, --metrics_field**: 
+      Field to be used for calculating the virality ratio.
+
+    - **-mn, --metrics_neighbors**: 
+      Number of neighbors to be considered. Defaults to 5.
+
+    - **-ma, --metrics_alpha**: 
+      Threshold used for the comparison of the virality and its neighbors. Defaults to 0.2.
+
+    - **-mm, --metrics_min_threshold**: 
+      Minimum threshold for the metric considered. Defaults to 1000.
+
+    - **-ni, --nlp_input**: 
+      The path to the CSV file containing the preprocessed messages with metrics. Defaults to results/datetime/messages_preprocessed.csv.
+
+    - **-no, --nlp_output**: 
+      The CSV output file for the nlp output data. Defaults to results/datetime/messages_nlp.csv.
+
+    - **-nt, --nlp_text**: 
+      The name of the column in the DataFrame that contains the text to be processed. Defaults to message.
+
+    - **-ns, --nlp_split**: 
+      Split messages into sentences.
+    """
 
     execution_datetime = datetime.datetime.now()
     results_folder = "results/" + execution_datetime.strftime('%Y-%m-%d_%H_%M_%S') + "/"
