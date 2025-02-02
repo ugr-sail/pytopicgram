@@ -15,14 +15,16 @@ def preprocessing_function(df: pd.DataFrame, **kwargs) -> None:
     It modifies the DataFrame in place.
 
     Current preprocessing steps include:
+    
     - Removing leading and trailing whitespace from specified string columns.
     
     Additional preprocessing steps can be added as needed.
 
-    Parameters:
-    - df (pd.DataFrame): The DataFrame to be processed.
-    - kwargs: Additional keyword arguments for customizing the preprocessing steps, such as:
-        - column_list (list): A list of column names to apply string trimming.
+    :param df: The DataFrame to be processed.
+    :type df: pd.DataFrame
+    :param kwargs: Additional keyword arguments for customizing the preprocessing steps.
+    :keyword column_list: A list of column names to apply string trimming.
+    :type column_list: list
     """
     
     # Example preprocessing step: Remove leading and trailing whitespace from all strings in 'column_list'
