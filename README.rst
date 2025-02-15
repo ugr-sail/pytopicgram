@@ -265,13 +265,13 @@ To run the snowball example, use the following command:
 ::
 
    cd pytopicgram
-   python -m examples.snowball 
-       --api_id <TELEGRAM_API_ID> --api_hash <TELEGRAM_API_HASH> \ 
-       --start_date 2024-08-30T00:00:00+00:00 --end_date 2024-08-31T23:59:59+00:00 
-       --channels_file ./examples/snowball_channels_sample.csv 
-       --output_channels_file ./examples/results/snowball_channels.csv 
-       --output_messages_file ./examples/results/snowball_messages.json 
-       --max_rounds 3
+   python -m examples.snowball \
+      --api_id <TELEGRAM_API_ID> --api_hash <TELEGRAM_API_HASH> \
+      --start_date 2024-08-30T00:00:00+00:00 --end_date 2024-08-31T23:59:59+00:00 \
+      --channels_file ./examples/snowball_channels_sample.csv \
+      --output_channels_file ./examples/results/snowball_channels.csv \
+      --output_messages_file ./examples/results/snowball_messages.json \
+      --max_rounds 3
 
 -  ``--api_id``: Your Telegram API ID, required to access the Telegram
    API.

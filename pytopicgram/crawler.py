@@ -44,7 +44,7 @@ import pandas as pd
 import json
 import re
 from rich import print
-from . import regex_patterns
+from pytopicgram import regex_patterns
 
 # The names and URLs of every channel must be present in the CSV
 channel_name_csv = 'Channel'
