@@ -1,0 +1,516 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Overview &mdash; pytopicgram  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Source code" href="api.html" />
+    <link rel="prev" title="pytopicgram documentation" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            pytopicgram
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#direct">Direct</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#docker-recommended">Docker (recommended)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#usage">Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-the-complete-pipeline">Running the complete pipeline</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#using-modules">Using modules</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#more-information">More information</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#license">License</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="api.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">pytopicgram</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Overview</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/overview.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="overview">
+<h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
+<hr class="docutils" />
+<p>pytopicgram is a Python library designed for extracting, processing, and
+topic modeling messages from Telegram channels. It provides a
+comprehensive pipeline for data collection, preprocessing, metrics
+calculation, natural language processing, and topic modeling, making it
+a powerful tool for researchers and analysts investigating public
+discourse on Telegram.</p>
+<section id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Link to this heading"></a></h2>
+<p><em>J. Gómez-Romero, J. Cantón-Correa, R. Pérez Mercado, F. Prados Abad, M.
+Molina-Solana, W. Fajardo</em>. <strong>pytopicgram: A library for data extraction
+and topic modeling from Telegram channels</strong>. September 2024.
+<a class="reference external" href="https://doi.org/10.5281/zenodo.13863008"><img alt="DOI:10.5281/zenodo.13863008" src="https://zenodo.org/badge/DOI/10.5281/zenodo.13863008.svg" /></a></p>
+</section>
+<section id="features">
+<h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><strong>Fast and Flexible Message Crawling</strong>: Efficiently connect to the
+Telegram API and retrieve messages from public channels using the
+<a class="reference external" href="https://docs.telethon.dev/en/stable/">Telethon</a> library.</p></li>
+<li><p><strong>Extended Channel Information Retrieval</strong>: Gather detailed
+information about Telegram channels, including subscriber counts,
+creation dates, recommended channels, and more.</p></li>
+<li><p><strong>Computation of Message Metrics</strong>: Calculate various metrics such as
+virality ratios to gain insights into content reach and engagement.</p></li>
+<li><p><strong>Out-of-the-Box BERTopic Integration</strong>: Perform topic modeling
+seamlessly with the
+<a class="reference external" href="https://maartengr.github.io/BERTopic/index.html">BERTopic</a>
+algorithm, leveraging embeddings from Large Language Models (LLMs).</p></li>
+<li><p><strong>Language-Agnostic Capabilities</strong>: Handle multiple languages, making
+it versatile for a wide range of linguistic contexts.</p></li>
+<li><p><strong>Data Minimization and Process Optimization</strong>: Limit the message
+features stored at the beginning of the analysis, supporting data
+minimization and reducing dataset size.</p></li>
+</ul>
+</section>
+<section id="installation">
+<h2>Installation<a class="headerlink" href="#installation" title="Link to this heading"></a></h2>
+<section id="direct">
+<h3>Direct<a class="headerlink" href="#direct" title="Link to this heading"></a></h3>
+<p>To install the required dependencies and run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">-</span><span class="n">r</span> <span class="n">requirements</span><span class="o">.</span><span class="n">txt</span>
+<span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span>
+</pre></div>
+</div>
+</section>
+<section id="docker-recommended">
+<h3>Docker (recommended)<a class="headerlink" href="#docker-recommended" title="Link to this heading"></a></h3>
+<p>Download the repository and then run:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">pytopicgram</span> <span class="o">.</span>
+<span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">it</span> <span class="n">pytopicgram</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="usage">
+<h2>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h2>
+<p>You can run the entire pipeline through the <code class="docutils literal notranslate"><span class="pre">main.py</span></code> script. The
+following command initiates the process, where messages in August 2024
+from <code class="docutils literal notranslate"><span class="pre">channels_sample.csv</span></code> are downloaded, preprocessed, and analyzed
+using topic modeling. An OpenAI key can be provided (at extra cost) to
+generate topic descriptions in natural language.</p>
+<section id="running-the-complete-pipeline">
+<h3>Running the complete pipeline<a class="headerlink" href="#running-the-complete-pipeline" title="Link to this heading"></a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">pytopicgram</span>
+<span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> \
+    <span class="o">--</span><span class="n">api_id</span> <span class="o">&lt;</span><span class="n">TELEGRAM_API_ID</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">api_hash</span> <span class="o">&lt;</span><span class="n">TELEGRAM_API_HASH</span><span class="o">&gt;</span> \
+    <span class="o">--</span><span class="n">start_date</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">01</span><span class="n">T00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> \
+    <span class="o">--</span><span class="n">end_date</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span><span class="n">T00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> \
+    <span class="o">--</span><span class="n">channels_file</span> <span class="n">config</span><span class="o">/</span><span class="n">channels_sample</span><span class="o">.</span><span class="n">csv</span> \
+    <span class="o">--</span><span class="n">openai_key</span> <span class="o">&lt;</span><span class="n">OPENAI_KEY</span><span class="o">&gt;</span> \
+    <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;Sample running, Aug 2024, using OpenAI API&quot;</span>
+</pre></div>
+</div>
+<p>When running the <code class="docutils literal notranslate"><span class="pre">main.py</span></code> script, you can customize the behavior of
+the pipeline using the following parameters:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Parameter Name</p></th>
+<th class="head"><p>Description</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--api_id</span></code></p></td>
+<td><p>Your Telegram API ID, required to access the
+Telegram API.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--api_hash</span></code></p></td>
+<td><p>Your Telegram API Hash, required to access the
+Telegram API.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--start_date</span></code></p></td>
+<td><p>The start date for collecting messages, in ISO
+8601 format (e.g.,
+<code class="docutils literal notranslate"><span class="pre">2024-08-01T00:00:00+00:00</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--end_date</span></code></p></td>
+<td><p>The end date for collecting messages, in ISO
+8601 format (e.g.,
+<code class="docutils literal notranslate"><span class="pre">2024-09-01T00:00:00+00:00</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p>``
+–channels_file``</p></td>
+<td><p>Path to the CSV file containing the list of
+channels to be processed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--openai_key</span></code>
+(optional)</p></td>
+<td><p>Your OpenAI API key, used to generate topic
+descriptions in natural language.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--description</span></code>
+(optional)</p></td>
+<td><p>A description of the current run, useful for
+logging and tracking purposes.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--craw</span>
+<span class="pre">ler_output_file</span></code>
+(optional)</p></td>
+<td><p>Path to the output file where the crawled
+messages will be saved.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--preproce</span>
+<span class="pre">ssor_input_file</span></code>
+(optional)</p></td>
+<td><p>Path to the input file for the preprocessor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--preproces</span>
+<span class="pre">sor_output_file</span></code>
+(optional)</p></td>
+<td><p>Path to the output file where the preprocessed
+messages will be saved.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--preprocess</span>
+<span class="pre">or_list_feature</span></code>
+(optional)</p></td>
+<td><p>List of features to be extracted during
+preprocessing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--preprocess</span>
+<span class="pre">or_list_channel</span></code>
+(optional)</p></td>
+<td><p>List of channels to be included during
+preprocessing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--pre</span>
+<span class="pre">processor_limit</span></code>
+(optional)</p></td>
+<td><p>Limit on the number of messages to be
+preprocessed.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--pr</span>
+<span class="pre">eprocessor_text</span></code>
+(optional)</p></td>
+<td><p>Text to be used for preprocessing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--remove_urls</span></code>
+(optional)</p></td>
+<td><p>Boolean flag to indicate whether URLs should be
+removed during preprocessing.</p></td>
+</tr>
+<tr class="row-odd"><td><p>``
+–remove_emojis``
+(optional)</p></td>
+<td><p>Boolean flag to indicate whether emojis should
+be removed during preprocessing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--a</span>
+<span class="pre">dd_descriptions</span></code>
+(optional)</p></td>
+<td><p>Boolean flag to indicate whether descriptions
+should be added during preprocessing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--c</span>
+<span class="pre">apture_mentions</span></code>
+(optional)</p></td>
+<td><p>Boolean flag to indicate whether mentions should
+be captured during preprocessing.</p></td>
+</tr>
+<tr class="row-even"><td><p>``
+–metrics_input``
+(optional)</p></td>
+<td><p>Path to the input file for metrics calculation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">-</span>
+<span class="pre">-metrics_output</span></code>
+(optional)</p></td>
+<td><p>Path to the output file where the calculated
+metrics will be saved.</p></td>
+</tr>
+<tr class="row-even"><td><p>``
+–metrics_field``
+(optional)</p></td>
+<td><p>Field to be used for metrics calculation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--me</span>
+<span class="pre">trics_neighbors</span></code>
+(optional)</p></td>
+<td><p>Number of neighbors to be considered for metrics
+calculation.</p></td>
+</tr>
+<tr class="row-even"><td><p>``
+–metrics_alpha``
+(optional)</p></td>
+<td><p>Alpha value to be used for metrics calculation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--metric</span>
+<span class="pre">s_min_threshold</span></code>
+(optional)</p></td>
+<td><p>Minimum threshold to be used for metrics
+calculation.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--nlp_input</span></code>
+(optional)</p></td>
+<td><p>Path to the input file for NLP processing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--nlp_output</span></code>
+(optional)</p></td>
+<td><p>Path to the output file where the NLP results
+will be saved.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--nlp_text</span></code>
+(optional)</p></td>
+<td><p>Text to be used for NLP processing.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--nlp_split</span></code>
+(optional)</p></td>
+<td><p>Boolean flag to indicate whether the text should
+be split during NLP processing.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--extra</span>
+<span class="pre">ctor_input_file</span></code>
+(optional)</p></td>
+<td><p>Path to the input file for the topic extractor.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--extrac</span>
+<span class="pre">tor_output_file</span></code>
+(optional)</p></td>
+<td><p>Path to the output file where the extracted
+topics will be saved.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--e</span>
+<span class="pre">xtractor_column</span></code>
+(optional)</p></td>
+<td><p>Column to be used for topic extraction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--extra</span>
+<span class="pre">ctor_num_topics</span></code>
+(optional)</p></td>
+<td><p>Number of topics to be extracted.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--e</span>
+<span class="pre">xtractor_openai</span></code>
+(optional)</p></td>
+<td><p>Boolean flag to indicate whether OpenAI should
+be used for topic extraction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--extracto</span>
+<span class="pre">r_n_docs_openai</span></code>
+(optional)</p></td>
+<td><p>Number of documents to be used for OpenAI topic
+extraction.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--extract</span>
+<span class="pre">or_sample_ratio</span></code>
+(optional)</p></td>
+<td><p>Ratio of samples to be used for topic
+extraction.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--extracto</span>
+<span class="pre">r_messages_used</span></code>
+(optional)</p></td>
+<td><p>Number of messages to be used for topic
+extraction.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--vi</span>
+<span class="pre">ewer_model_file</span></code>
+(optional)</p></td>
+<td><p>Path to the model file for the topic viewer.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--vi</span>
+<span class="pre">ewer_input_file</span></code>
+(optional)</p></td>
+<td><p>Path to the input file for the topic viewer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--viewe</span>
+<span class="pre">r_training_file</span></code>
+(optional)</p></td>
+<td><p>Path to the training file for the topic viewer.</p></td>
+</tr>
+<tr class="row-odd"><td><p>``
+–viewer_column``
+(optional)</p></td>
+<td><p>Column to be used for the topic viewer.</p></td>
+</tr>
+<tr class="row-even"><td><p>``
+–viewer_output``
+(optional)</p></td>
+<td><p>Path to the output file where the topic viewer
+results will be saved.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">--vi</span>
+<span class="pre">ewer_num_topics</span></code>
+(optional)</p></td>
+<td><p>Number of topics to be displayed in the topic
+viewer.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">--view</span>
+<span class="pre">er_generate_viz</span></code>
+(optional)</p></td>
+<td><p>Boolean flag to indicate whether visualizations
+should be generated in the topic viewer.</p></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="using-modules">
+<h3>Using modules<a class="headerlink" href="#using-modules" title="Link to this heading"></a></h3>
+<p>To run any component of the library, you can use the <code class="docutils literal notranslate"><span class="pre">main</span></code> included
+in each one. For instance, use the following to run the <code class="docutils literal notranslate"><span class="pre">extractor</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>pytopicgram
+python<span class="w"> </span>extractor.py<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--file<span class="w"> </span>results/messages_nlp.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--column<span class="w"> </span>message_nlp<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--output<span class="w"> </span>model.pkl<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--openai_key<span class="w"> </span>&lt;OPENAI_KEY&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--n_docs_openai<span class="w"> </span><span class="m">15</span>
+</pre></div>
+</div>
+<p>In the <code class="docutils literal notranslate"><span class="pre">examples</span></code> folder, you can find examples of running individual
+components of the pipeline. For instance, <code class="docutils literal notranslate"><span class="pre">snowball.py</span></code> demonstrates
+how to use the snowball technique to gather messages from related
+channels.</p>
+<p>To run the <code class="docutils literal notranslate"><span class="pre">snowball.py</span></code> example, use the following command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>pytopicgram
+python<span class="w"> </span>-m<span class="w"> </span>examples.snowball<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--api_id<span class="w"> </span>&lt;TELEGRAM_API_ID&gt;<span class="w"> </span>--api_hash<span class="w"> </span>&lt;TELEGRAM_API_HASH&gt;<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--start_date<span class="w"> </span><span class="m">2024</span>-08-30T00:00:00+00:00<span class="w"> </span>--end_date<span class="w"> </span><span class="m">2024</span>-08-31T23:59:59+00:00<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--channels_file<span class="w"> </span>./examples/snowball_channels_sample.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--output_channels_file<span class="w"> </span>./examples/results/snowball_channels.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--output_messages_file<span class="w"> </span>./examples/results/snowball_messages.json<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--max_rounds<span class="w"> </span><span class="m">3</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">--api_id</span></code>: Your Telegram API ID, required to access the Telegram
+API.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--api_hash</span></code>: Your Telegram API Hash, required to access the
+Telegram API.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--start_date</span></code>: The start date for collecting messages, in ISO 8601
+format (e.g., <code class="docutils literal notranslate"><span class="pre">2024-08-01T00:00:00+00:00</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--end_date</span></code>: The end date for collecting messages, in ISO 8601
+format (e.g., <code class="docutils literal notranslate"><span class="pre">2024-09-01T00:00:00+00:00</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--channels_file</span></code>: Path to the CSV file containing the list of
+channels to be processed.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output_channels_file</span></code>: Path to the output CSV file where the
+snowball channels will be saved.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--output_messages_file</span></code>: Path to the output JSON file where the
+collected messages will be saved.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--openai_key</span></code>: Your OpenAI API key, used to generate topic
+descriptions in natural language (optional).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">--max_rounds</span></code>: The maximum number of rounds for the snowball
+process, determining how many iterations of related channel gathering
+will be performed.</p></li>
+</ul>
+</section>
+</section>
+<section id="more-information">
+<h2>More information<a class="headerlink" href="#more-information" title="Link to this heading"></a></h2>
+<p>A short video on the use of <code class="docutils literal notranslate"><span class="pre">pytopicgram</span></code>: <a class="reference external" href="https://drive.google.com/file/d/1jk_b95r5dGzeNiXisPdQr4zwT1tudUIe/view?usp=share_link">Watch the video on Google
+Drive</a></p>
+<p>Slides: <a class="reference external" href="https://drive.google.com/file/d/1jlfTSWeXoWEuSKQnzxAL6VZ_aNfQB-Rw/view?usp=sharing">Check the
+slides</a></p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Link to this heading"></a></h2>
+<p>This project is licensed under the Apache License 2.0 - see the
+<a class="reference external" href="LICENSE">LICENSE</a> file for details.</p>
+</section>
+<section id="acknowledgments">
+<h2>Acknowledgments<a class="headerlink" href="#acknowledgments" title="Link to this heading"></a></h2>
+<p>This work was supported by the UDDOT project funded by the European
+Media Information Fund (<a class="reference external" href="https://gulbenkian.pt/emifund/">EMIF</a>)
+managed by the Calouste Gulbenkian Foundation, the XAI-DISINFODEMICS
+project (PLEC2021-007681) funded by MICIU/AEI/10.13039/501100011033 and
+by European Union NextGenerationEU/PRTR, and The Social Observatory of
+“la Caixa” Foundation.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="pytopicgram documentation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="api.html" class="btn btn-neutral float-right" title="Source code" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, SAIL.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

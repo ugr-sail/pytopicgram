@@ -1,0 +1,6 @@
+pytopicgram.metrics\_calculator.filter\_and\_convert
+====================================================
+
+.. currentmodule:: pytopicgram.metrics_calculator
+
+.. autofunction:: filter_and_convert

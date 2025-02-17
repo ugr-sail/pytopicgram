@@ -1,0 +1,6 @@
+pytopicgram.preprocessor.channel\_selection
+===========================================
+
+.. currentmodule:: pytopicgram.preprocessor
+
+.. autofunction:: channel_selection

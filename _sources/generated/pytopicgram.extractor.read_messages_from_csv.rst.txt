@@ -1,0 +1,6 @@
+pytopicgram.extractor.read\_messages\_from\_csv
+===============================================
+
+.. currentmodule:: pytopicgram.extractor
+
+.. autofunction:: read_messages_from_csv
