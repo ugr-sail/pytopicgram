@@ -98,6 +98,18 @@ When running the `main.py` script, you can customize the behavior of the pipelin
 
 
 ### Using modules
+To run any component of the library, you can use the `main` included in each one. For instance, use the following to run the extractor:
+
+```bash
+cd pytopicgram
+python extractor.py \
+    --file results/messages_nlp.csv \
+    --column message_nlp \
+    --output model.pkl \
+    --openai_key <OPENAI_KEY> \
+    --n_docs_openai 15
+```
+
 In the `examples` folder, you can find examples of running individual components of the pipeline. For instance, `snowball.py` demonstrates how to use the snowball technique to gather messages from related channels.
 
 To run the snowball example, use the following command:
