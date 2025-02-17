@@ -74,8 +74,8 @@ import re
 import urlextract
 import tldextract
 
-from . import regex_patterns
-from . import preprocessing_extra
+from pytopicgram import regex_patterns
+from pytopicgram import preprocessing_extra
 
 from tqdm import tqdm
 from rich import print

@@ -38,7 +38,7 @@ import numpy as np
 import tqdm
 import json
 import argparse
-from . import nlp
+from pytopicgram import nlp
 from rich import print
 
 def virality(df: pd.DataFrame, field: str = 'views', n: int = 5, alpha: float = 0.2, min_threshold: int = 1000) -> pd.DataFrame:

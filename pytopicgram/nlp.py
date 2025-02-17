@@ -35,7 +35,7 @@ from spacytextblob.spacytextblob import SpacyTextBlob
 from tqdm import tqdm
 from rich import print
 import re
-from . import regex_patterns
+from pytopicgram import regex_patterns
 
 # --------------------------------------------------------------------------------
 def read_dataframe_from_csv_file(csv_file_path: str) -> pd.DataFrame:
