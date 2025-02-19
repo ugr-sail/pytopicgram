@@ -3,7 +3,8 @@
 pytopicgram is a Python library designed for extracting, processing, and topic modeling messages from Telegram channels. It provides a comprehensive pipeline for data collection, preprocessing, metrics calculation, natural language processing, and topic modeling, making it a powerful tool for researchers and analysts investigating public discourse on Telegram.
 
 ## Citation
-*J. Gómez-Romero, J. Cantón-Correa, R. Pérez Mercado, F. Prados Abad, M. Molina-Solana, W. Fajardo*. **pytopicgram: A library for data extraction and topic modeling from Telegram channels**. September 2024. [![DOI:10.5281/zenodo.13863008](https://zenodo.org/badge/DOI/10.5281/zenodo.13863008.svg)](https://doi.org/10.5281/zenodo.13863008)
+*J. Gómez-Romero, J. Cantón-Correa, R. Pérez Mercado, F. Prados Abad, M. Molina-Solana, W. Fajardo*. **pytopicgram: A library for data extraction and topic modeling from Telegram channels**. September 2024. [![arXiv](https://img.shields.io/badge/arXiv-1234.56789-b31b1b.svg)](https://arxiv.org/abs/2502.04882)
+
 
 ## Features
 
