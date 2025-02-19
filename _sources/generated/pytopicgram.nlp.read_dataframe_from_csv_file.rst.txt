@@ -1,6 +1,0 @@
-pytopicgram.nlp.read\_dataframe\_from\_csv\_file
-================================================
-
-.. currentmodule:: pytopicgram.nlp
-
-.. autofunction:: read_dataframe_from_csv_file

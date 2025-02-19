@@ -1,6 +1,0 @@
-pytopicgram.preprocessor.extract\_emojis
-========================================
-
-.. currentmodule:: pytopicgram.preprocessor
-
-.. autofunction:: extract_emojis

@@ -1,6 +1,0 @@
-pytopicgram.preprocessor.extract\_urls
-======================================
-
-.. currentmodule:: pytopicgram.preprocessor
-
-.. autofunction:: extract_urls

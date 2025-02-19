@@ -1,6 +1,0 @@
-pytopicgram.nlp.write\_to\_csv\_file
-====================================
-
-.. currentmodule:: pytopicgram.nlp
-
-.. autofunction:: write_to_csv_file

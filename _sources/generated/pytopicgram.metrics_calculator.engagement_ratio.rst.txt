@@ -1,6 +1,0 @@
-pytopicgram.metrics\_calculator.engagement\_ratio
-=================================================
-
-.. currentmodule:: pytopicgram.metrics_calculator
-
-.. autofunction:: engagement_ratio

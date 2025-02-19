@@ -1,6 +1,0 @@
-pytopicgram.nlp.main
-====================
-
-.. currentmodule:: pytopicgram.nlp
-
-.. autofunction:: main

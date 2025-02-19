@@ -1,6 +1,0 @@
-pytopicgram.extractor.train\_bertopic\_model
-============================================
-
-.. currentmodule:: pytopicgram.extractor
-
-.. autofunction:: train_bertopic_model

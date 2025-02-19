@@ -1,6 +1,0 @@
-pytopicgram.viewer.main
-=======================
-
-.. currentmodule:: pytopicgram.viewer
-
-.. autofunction:: main

@@ -1,6 +1,0 @@
-pytopicgram.preprocessor.include\_media\_description
-====================================================
-
-.. currentmodule:: pytopicgram.preprocessor
-
-.. autofunction:: include_media_description
