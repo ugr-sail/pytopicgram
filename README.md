@@ -113,16 +113,15 @@ python extractor.py \
 
 In the `examples` folder, you can find examples of running individual components of the pipeline. For instance, `snowball.py` demonstrates how to use the snowball technique to gather messages from related channels.
 
-To run the `snowball.py` example, use the following command:
+To run the `snowball.py` example, use the following command, from the project root folder:
 
 ```bash
-cd pytopicgram
-python -m examples.snowball \
+python -m pytopicgram.examples.snowball \
    --api_id <TELEGRAM_API_ID> --api_hash <TELEGRAM_API_HASH> \
    --start_date 2024-08-30T00:00:00+00:00 --end_date 2024-08-31T23:59:59+00:00 \
-   --channels_file ./examples/snowball_channels_sample.csv \
-   --output_channels_file ./examples/results/snowball_channels.csv \
-   --output_messages_file ./examples/results/snowball_messages.json \
+   --channels_file ./pytopicgram/examples/snowball_channels_sample.csv \
+   --output_channels_file ./results/snowball_channels.csv \
+   --output_messages_file ./results/snowball_messages.json \
    --max_rounds 3
 ```
 

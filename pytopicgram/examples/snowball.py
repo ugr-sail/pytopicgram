@@ -36,7 +36,7 @@ from rich import print
 import argparse
 import os
 
-from crawler import read_channels_from_csv, process_channels
+from pytopicgram.crawler import read_channels_from_csv, process_channels
 
 # Set up the console for rich output
 console = Console()
