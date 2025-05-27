@@ -129,7 +129,7 @@ def main():
     parser.add_argument('-d', '--description',          type=str, required=False, help="A sentence that describes this execution, for instance the reason why it was executed.")
 
     # Add the crawler arguments
-    parser.add_argument('-ch', '--channels_file',       type=str, required=False,  default="config/channels.csv", help="The path to the CSV file containing the channel list.")
+    parser.add_argument('-ch', '--channels_file',       type=str, required=False,  default="pytopicgram/config/channels.csv", help="The path to the CSV file containing the channel list.")
     parser.add_argument('-s', '--start_date',           type=str, required=False, default=datetime.datetime.now().replace(hour=0, minute=0, second=0, microsecond=0, tzinfo=datetime.timezone.utc).isoformat(), help="The start date in the format 'YYYY-MM-DDTHH:MM:SS+00:00'. Defaults to today's midnight.")
     parser.add_argument('-e', '--end_date',             type=str, required=False, default=datetime.datetime.now().replace(microsecond=0, tzinfo=datetime.timezone.utc).isoformat(), help="The end date in the format 'YYYY-MM-DDTHH:MM:SS+00:00'. Defaults to now.")
     parser.add_argument('-co', '--crawler_output',      type=str, required=False, default=results_folder + "channel_messages.json", help="The JSON output file for the messages obtained with the crawler. Defaults to results/datetime/channel_messages.json")
@@ -141,7 +141,7 @@ def main():
     # Add the preprocessor arguments
     parser.add_argument('-pi', '--preprocessor_input',  type=str, required=False, default=results_folder + "channel_messages.json", help="The JSON input file for the preprocessor containing the messages obtained with the crawler. Defaults to results/datetime/channel_messages.json")
     parser.add_argument('-po', '--preprocessor_output', type=str, required=False, default=results_folder + "messages_preprocessed.csv", help="The CSV output file for the preprocessor output data. Defaults to results/datetime/messages_preprocessed.csv")
-    parser.add_argument('-l', '--list-feature',         type=str, required=False, default="config/list_features.csv", help="The CSV file containing the list of features to be selected.")
+    parser.add_argument('-l', '--list-feature',         type=str, required=False, default="pytopicgram/config/list_features.csv", help="The CSV file containing the list of features to be selected.")
     parser.add_argument('-c', '--list-channel',         type=str, required=False, help="The CSV file containing the list of channels to be selected.")
     parser.add_argument('-nl', '--limit',               type=int, required=False, default=0, help="Limit preprocessing to the first n records. Defaults to 0, which results in all records.")
     parser.add_argument('-pt', '--preprocessor_text',   type=str, required=False, default="message", help="The name of the column in the DataFrame that contains the text to be processed.")
@@ -270,14 +270,14 @@ def main():
     if nlp_output_file_path != viewer_input_file_path:
         print("[WARNING] The output of the executed NLP will NOT be passed to the viewer. Make sure this is expected")
 
-    scripts_folder = "./"
+    package_name = "pytopicgram."
 
-    crawler         = scripts_folder + "crawler.py"
-    preprocessor    = scripts_folder + "preprocessor.py"
-    metrics         = scripts_folder + "metrics_calculator.py"
-    nlp             = scripts_folder + "nlp.py"
-    extractor       = scripts_folder + "extractor.py"
-    viewer          = scripts_folder + "viewer.py"
+    crawler         = package_name + "crawler"
+    preprocessor    = package_name + "preprocessor"
+    metrics         = package_name + "metrics_calculator"
+    nlp             = package_name + "nlp"
+    extractor       = package_name + "extractor"
+    viewer          = package_name + "viewer"
 
     def run_subprocess(command):
         start_time = time.time()
@@ -300,7 +300,7 @@ def main():
         if append:
             args.append("-a")
 
-        run_subprocess(["python", crawler] + args)
+        run_subprocess(["python", "-m", crawler] + args)
     else:
         print("Missing api_id and/or api_hash: crawler cannot be executed.")
 
@@ -322,7 +322,7 @@ def main():
             args.append("-d")
         if capture_mentions:
             args.append("-cm")
-        run_subprocess(["python", preprocessor] + args)
+        run_subprocess(["python", "-m", preprocessor] + args)
     else:
         print(f"{preprocessor_input_file_path} does not exist. preprocessor cannot be executed.")
 
@@ -336,7 +336,7 @@ def main():
             "-a", str(metrics_alpha),
             "-m", str(metrics_min_threshold)
         ]
-        run_subprocess(["python", metrics] + args)
+        run_subprocess(["python", "-m", metrics] + args)
     else:
         print(f"{metrics_input_file_path} does not exist. metrics calculation cannot be executed.")
 
@@ -349,7 +349,7 @@ def main():
         ]
         if nlp_split:
             args.append("-s")
-        run_subprocess(["python", nlp] + args)
+        run_subprocess(["python", "-m", nlp] + args)
     else:
         print(f"{nlp_input_file_path} does not exist. nlp cannot be executed.")
 
@@ -369,7 +369,7 @@ def main():
         if openai_key:
             args.append("-k")
             args.append(openai_key)
-        run_subprocess(["python", extractor] + args)
+        run_subprocess(["python", "-m", extractor] + args)
     else:
         print(f"{extractor_input_file_path} does not exist. extractor cannot be executed.")
 
@@ -385,7 +385,7 @@ def main():
         ]
         if viewer_generate_viz:
             args.append("-v")
-        run_subprocess(["python", viewer] + args)
+        run_subprocess(["python", "-m", viewer] + args)
     else:
         print(f"{viewer_model_file_path} and/or {viewer_input_file_path} and/or {viewer_training_file_path} do not exist. viewer cannot be executed.")
 

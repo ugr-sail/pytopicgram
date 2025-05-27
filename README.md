@@ -39,12 +39,11 @@ You can run the entire pipeline through the `main.py` script. The following comm
 
 ### Running the complete pipeline
 ```
-cd pytopicgram
-python main.py \
+python -m pytopicgram.main \
     --api_id <TELEGRAM_API_ID> --api_hash <TELEGRAM_API_HASH> \
     --start_date 2024-08-01T00:00:00+00:00 \
     --end_date 2024-09-01T00:00:00+00:00 \
-    --channels_file config/channels_sample.csv \
+    --channels_file ./pytopicgram/config/channels_sample.csv \
     --openai_key <OPENAI_KEY> \
     --description "Sample running, Aug 2024, using OpenAI API"
 ```
@@ -99,12 +98,11 @@ When running the `main.py` script, you can customize the behavior of the pipelin
 
 
 ### Using modules
-To run any component of the library, you can use the `main` included in each one. For instance, use the following to run the `extractor`:
+To run any component of the library, you can use the `main` included in each one. For instance, use the following (from the project root folder) to run the `extractor`:
 
 ```bash
-cd pytopicgram
-python extractor.py \
-    --file results/messages_nlp.csv \
+python -m pytopicgram.extractor \
+    --file ./results/messages_nlp.csv \
     --column message_nlp \
     --output model.pkl \
     --openai_key <OPENAI_KEY> \
@@ -113,7 +111,7 @@ python extractor.py \
 
 In the `examples` folder, you can find examples of running individual components of the pipeline. For instance, `snowball.py` demonstrates how to use the snowball technique to gather messages from related channels.
 
-To run the `snowball.py` example, use the following command, from the project root folder:
+To run the `snowball.py` example, use the following command (from the project root folder):
 
 ```bash
 python -m pytopicgram.examples.snowball \
