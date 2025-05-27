@@ -136,8 +136,8 @@ def feature_selection(df: pd.DataFrame, feature_list_file: str) -> pd.DataFrame:
 
     This function reads a list of feature names from a CSV file and selects only those features from the DataFrame.
     The CSV file should contain two columns:
-        - 'feature_in': The name of the feature in the input DataFrame.
-        - 'feature_out': The name of the feature in the output DataFrame.
+    - 'feature_in': The name of the feature in the input DataFrame.
+    - 'feature_out': The name of the feature in the output DataFrame.
 
     Parameters:
     - df (pd.DataFrame): The DataFrame containing the data to be analyzed.

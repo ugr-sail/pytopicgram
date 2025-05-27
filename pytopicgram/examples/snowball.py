@@ -2,8 +2,8 @@
 This script performs snowball crawl to iteratively collect messages and recommended channels from Telegram.
 
 Usage:
-python -m examples.snowball    --api_id <API_ID> --api_hash <API_HASH> \ 
-                               --initial_csv examples/snowball_channels_sample.py \ 
+python -m examples.snowball    --api_id <API_ID> --api_hash <API_HASH> \
+                               --initial_csv examples/snowball_channels_sample.py \
                                --output_messages_file examples/results/messages.csv \
                                --output_channels_file examples/results/channels.csv \
                                --start_date 2024-08-01T00:00:00+00:00 --end_date 2024-09-01T00:00:00+00:00 \
