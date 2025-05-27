@@ -1,3 +1,4 @@
+
 pytopicgram
 ===========
 
@@ -13,8 +14,8 @@ Citation
 
 *J. Gómez-Romero, J. Cantón-Correa, R. Pérez Mercado, F. Prados Abad, M.
 Molina-Solana, W. Fajardo*. **pytopicgram: A library for data extraction
-and topic modeling from Telegram channels**. September 2024.
-|DOI:10.5281/zenodo.13863008|
+and topic modeling from Telegram channels**. SoftwareX 30, 102141 May 2025.
+|DOI:10.1016/j.softx.2025.102141|
 
 Features
 --------
@@ -330,5 +331,5 @@ project (PLEC2021-007681) funded by MICIU/AEI/10.13039/501100011033 and
 by European Union NextGenerationEU/PRTR, and The Social Observatory of
 “la Caixa” Foundation.
 
-.. |DOI:10.5281/zenodo.13863008| image:: https://zenodo.org/badge/DOI/10.5281/zenodo.13863008.svg
-   :target: https://doi.org/10.5281/zenodo.13863008
+.. |DOI:10.1016/j.softx.2025.102141| image:: https://img.shields.io/badge/doi-10.1016%2Fj.softx.2025.102141-b31b1b.svg
+   :target: https://doi.org/10.1016/j.softx.2025.102141
