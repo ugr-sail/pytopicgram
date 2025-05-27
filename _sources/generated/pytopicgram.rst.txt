@@ -11,21 +11,21 @@
    :recursive:   
 
    
-      crawler
+      pytopicgram.crawler
    
-      extractor
+      pytopicgram.extractor
    
-      main
+      pytopicgram.main
    
-      metrics_calculator
+      pytopicgram.metrics_calculator
    
-      nlp
+      pytopicgram.nlp
    
-      preprocessing_extra
+      pytopicgram.preprocessing_extra
    
-      preprocessor
+      pytopicgram.preprocessor
    
-      regex_patterns
+      pytopicgram.regex_patterns
    
-      viewer
+      pytopicgram.viewer
    

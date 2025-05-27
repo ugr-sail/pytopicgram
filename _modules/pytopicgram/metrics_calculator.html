@@ -1,0 +1,357 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pytopicgram.metrics_calculator &mdash; pytopicgram  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pytopicgram
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html#pytopicgram">pytopicgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pytopicgram</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pytopicgram.metrics_calculator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pytopicgram.metrics_calculator</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module facilitates the calculation of various metrics for a dataset. It includes functionalities to read a CSV file containing the data, compute metrics such as virality, forwards ratio, engagement ratio, and reach, and save the results to a new CSV file.</span>
+
+<span class="sd">The module can be executed as an independent script or imported into other scripts for further analysis or processing.</span>
+
+<span class="sd">Functions:</span>
+
+<span class="sd">- virality: Computes the virality of a dataset as defined in Nobari et al. [1].</span>
+<span class="sd">    - Parameters:</span>
+<span class="sd">        - df (pd.DataFrame): The DataFrame containing the data to be analyzed.</span>
+<span class="sd">        - field (str): The field to be used for calculating the virality ratio. Default is &#39;views&#39;.</span>
+<span class="sd">        - n (int): The number of neighbors to be considered. Default is 5.</span>
+<span class="sd">        - alpha (float): The threshold used for the comparison of the virality and its neighbors. Default is 0.2.</span>
+<span class="sd">        - min_threshold (int): The minimum threshold for the metric considered. Default is 1000.</span>
+<span class="sd">- forwards_ratio: Computes the forwards ratio of each record in a dataset.</span>
+<span class="sd">    - Parameters:</span>
+<span class="sd">        - df (pd.DataFrame): The DataFrame containing the data to be analyzed.</span>
+
+<span class="sd">- engagement_ratio: Computes the engagement ratio of each record in a dataset.</span>
+<span class="sd">    - Parameters:</span>
+<span class="sd">        - df (pd.DataFrame): The DataFrame containing the data to be analyzed.</span>
+
+<span class="sd">- reach: Computes the reach of each record in a dataset.</span>
+<span class="sd">    - Parameters:</span>
+<span class="sd">        - df (pd.DataFrame): The DataFrame containing the data to be analyzed.</span>
+
+<span class="sd">Dependencies:</span>
+
+<span class="sd">- pandas: Library for data manipulation and analysis.</span>
+<span class="sd">- numpy: Library for numerical computing.</span>
+<span class="sd">- tqdm: Library for adding progress meters to loops.</span>
+<span class="sd">- json: Module for working with JSON data.</span>
+<span class="sd">- argparse: Parser for command-line options, arguments, and sub-commands.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">tqdm</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">from</span> <span class="nn">pytopicgram</span> <span class="kn">import</span> <span class="n">nlp</span>
+<span class="kn">from</span> <span class="nn">rich</span> <span class="kn">import</span> <span class="nb">print</span>
+
+<div class="viewcode-block" id="virality">
+<a class="viewcode-back" href="../../generated/pytopicgram.metrics_calculator.virality.html#pytopicgram.metrics_calculator.virality">[docs]</a>
+<span class="k">def</span> <span class="nf">virality</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">field</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">alpha</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">min_threshold</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the virality of a dataset as defined in Nobari et al. [1].</span>
+
+<span class="sd">    The virality ratio is defined as the ratio between an observation and the average of its `n` neighbors.</span>
+<span class="sd">    If the virality ratio is greater than a threshold `alpha`, the observation is considered viral.</span>
+
+<span class="sd">    Parameters:</span>
+
+<span class="sd">    - df (pd.DataFrame): The DataFrame containing the data to be analyzed.</span>
+<span class="sd">    - field (str): The field to be used for calculating the virality ratio. Default is &#39;views&#39;.</span>
+<span class="sd">    - n (int): The number of neighbors to be considered. Default is 5.</span>
+<span class="sd">    - alpha (float): The threshold used for the comparison of the virality and its neighbors. Default is 0.2.</span>
+<span class="sd">    - min_threshold (int): The minimum threshold for the metric considered. Default is 1000.</span>
+<span class="sd">    - topic (str): The topic ID to be considered for the analysis. Default is None.</span>
+
+<span class="sd">    Returns:</span>
+
+<span class="sd">    - pd.DataFrame: A new DataFrame containing three new columns</span>
+<span class="sd">        - `virality`: The virality of each record.</span>
+<span class="sd">        - `virality_win_sz`: The difference in time between the first and last neighbor (self included).</span>
+<span class="sd">        - `is_viral`: Whether the record is considered viral or not.</span>
+
+<span class="sd">    [1]: Arash Dargahi Nobari, Malikeh Haj Khan Mirzaye Sarraf, Mahmood Neshati, Farnaz Erfanian Daneshvar.</span>
+<span class="sd">    Characteristics of viral messages on Telegram; The world&#39;s largest hybrid public and private messenger.</span>
+<span class="sd">    Expert Systems with Applications, (https://doi.org/10.1016/j.eswa.2020.114303).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating virality... &quot;</span><span class="p">)</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;channel_name&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;virality&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;virality_win_sz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">for</span> <span class="n">channel</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;channel_name&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Calculating virality for channel: </span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">df_channel</span> <span class="o">=</span> <span class="n">df</span><span class="p">[(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;channel_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">channel</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;orig_date&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isna</span><span class="p">())]</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_channel</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Skipping channel </span><span class="si">{</span><span class="n">channel</span><span class="si">}</span><span class="s2"> due to insufficient data.&quot;</span><span class="p">)</span> <span class="c1"># @TODO: do not skip, fill with NAs</span>
+            <span class="k">continue</span>
+
+        <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># index of df_channel</span>
+        <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="o">.</span><span class="n">tqdm</span><span class="p">(</span><span class="n">df_channel</span><span class="o">.</span><span class="n">iterrows</span><span class="p">(),</span> <span class="n">total</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">df_channel</span><span class="p">)):</span>
+
+            <span class="n">accum</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">l</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">l_date</span><span class="p">,</span> <span class="n">r_date</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
+
+            <span class="c1"># get sum of field for N neighbors</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">l</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">accum</span> <span class="o">+=</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">field</span><span class="p">]</span>
+                    <span class="n">r_date</span> <span class="o">=</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
+                    <span class="n">r</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">r</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_channel</span><span class="p">):</span>
+                    <span class="n">accum</span> <span class="o">+=</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="n">field</span><span class="p">]</span>
+                    <span class="n">l_date</span> <span class="o">=</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
+                    <span class="n">l</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="s1">&#39;date&#39;</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">-</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="s1">&#39;date&#39;</span><span class="p">]):</span>
+                    <span class="n">accum</span> <span class="o">+=</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="n">field</span><span class="p">]</span>
+                    <span class="n">l_date</span> <span class="o">=</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">l</span><span class="p">][</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
+                    <span class="n">l</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">accum</span> <span class="o">+=</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="n">field</span><span class="p">]</span>
+                    <span class="n">r_date</span> <span class="o">=</span> <span class="n">df_channel</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="s1">&#39;date&#39;</span><span class="p">]</span>
+                    <span class="n">r</span> <span class="o">+=</span> <span class="mi">1</span>
+
+            <span class="c1"># calculate the virality ratio</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;virality&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">row</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">accum</span> <span class="o">/</span> <span class="n">n</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">row</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="s1">&#39;virality_win_sz&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">r_date</span> <span class="o">-</span> <span class="n">l_date</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">()</span>
+
+            <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+    
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;is_viral&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;virality&#39;</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">alpha</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_threshold</span><span class="p">)</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[[green]OK[/]]&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="forwards_ratio">
+<a class="viewcode-back" href="../../generated/pytopicgram.metrics_calculator.forwards_ratio.html#pytopicgram.metrics_calculator.forwards_ratio">[docs]</a>
+<span class="k">def</span> <span class="nf">forwards_ratio</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the forwards ratio of each record in a dataset.</span>
+
+<span class="sd">    The forwards ratio of a record is defined as the ratio of the number of shares to the number of views.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - df (pd.DataFrame): The DataFrame containing the data to be analyzed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - pd.DataFrame: A new DataFrame containing the forwards ratio of each record.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating forwards ratio... &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;fwd_ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;forwards&#39;</span><span class="p">]</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;views&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[[green]OK[/]]&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="engagement_ratio">
+<a class="viewcode-back" href="../../generated/pytopicgram.metrics_calculator.engagement_ratio.html#pytopicgram.metrics_calculator.engagement_ratio">[docs]</a>
+<span class="k">def</span> <span class="nf">engagement_ratio</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the engagement ratio of each record in a dataset.</span>
+
+<span class="sd">    The engagement ratio of a record is defined as the ratio of the number of reactions to the number of views.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - df (pd.DataFrame): The DataFrame containing the data to be analyzed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - pd.DataFrame: A new DataFrame containing the engagement ratio of each record.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating engagement ratio... &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;engagement_ratio&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;reactions&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+        <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">sum</span><span class="p">([</span><span class="n">v</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="k">else</span> <span class="mi">0</span>
+    <span class="p">)</span> <span class="o">/</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;views&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[[green]OK[/]]&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="reach">
+<a class="viewcode-back" href="../../generated/pytopicgram.metrics_calculator.reach.html#pytopicgram.metrics_calculator.reach">[docs]</a>
+<span class="k">def</span> <span class="nf">reach</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calculates the reach of each record in a dataset.</span>
+
+<span class="sd">    The reach of a record is defined as the number of unique users who have viewed the record.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - df (pd.DataFrame): The DataFrame containing the data to be analyzed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - pd.DataFrame: A new DataFrame containing the reach of each record.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Calculating reach... &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="p">[</span><span class="s1">&#39;reach&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;views&#39;</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[[green]OK[/]]&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="filter_and_convert">
+<a class="viewcode-back" href="../../generated/pytopicgram.metrics_calculator.filter_and_convert.html#pytopicgram.metrics_calculator.filter_and_convert">[docs]</a>
+<span class="k">def</span> <span class="nf">filter_and_convert</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Filters and converts the input DataFrame.</span>
+
+<span class="sd">    This function performs the following operations:</span>
+<span class="sd">    1. Filters out records with 0 views or with forward restrictions.</span>
+<span class="sd">    2. Filters by topic if a topic is specified in the arguments.</span>
+<span class="sd">    3. Converts the &#39;date&#39; column to datetime format.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - df (pd.DataFrame): The input DataFrame to be processed.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - pd.DataFrame: The filtered and converted DataFrame.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="c1"># Filter out records with 0 views or with forward restriction</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="o">~</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;no_forwards&#39;</span><span class="p">]</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;views&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)]</span>
+
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s1">&#39;date&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">to_datetime</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<span class="c1"># --------------------------------------------------------------------------------</span>
+
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../generated/pytopicgram.metrics_calculator.main.html#pytopicgram.metrics_calculator.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s1">&#39;Calculate metrics for a dataset.&#39;</span><span class="p">)</span>
+
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="s1">&#39;--input&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to the input CSV file.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--output&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Path to the output CSV file.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;--field&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;views&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Field to be used for calculating the virality ratio.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-n&#39;</span><span class="p">,</span> <span class="s1">&#39;--neighbors&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Number of neighbors to be considered.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;--alpha&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Threshold used for the comparison of the virality and its neighbors.&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-m&#39;</span><span class="p">,</span> <span class="s1">&#39;--min_threshold&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;Minimum threshold for the metric considered.&#39;</span><span class="p">)</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">df</span> <span class="o">=</span> <span class="n">nlp</span><span class="o">.</span><span class="n">read_dataframe_from_csv_file</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">filter_and_convert</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    
+    <span class="n">df</span> <span class="o">=</span> <span class="n">forwards_ratio</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">engagement_ratio</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">reach</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">virality</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">field</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">field</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">neighbors</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">alpha</span><span class="p">,</span> <span class="n">min_threshold</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">min_threshold</span><span class="p">)</span>
+
+    <span class="n">nlp</span><span class="o">.</span><span class="n">write_to_csv_file</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, SAIL.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

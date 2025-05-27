@@ -7,14 +7,14 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Overview &mdash; pytopicgram  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
       <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -44,7 +44,8 @@
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="#pytopicgram">pytopicgram</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#features">Features</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a><ul>
@@ -92,7 +93,9 @@
              
   <section id="overview">
 <h1>Overview<a class="headerlink" href="#overview" title="Link to this heading"></a></h1>
-<hr class="docutils" />
+</section>
+<section id="pytopicgram">
+<h1>pytopicgram<a class="headerlink" href="#pytopicgram" title="Link to this heading"></a></h1>
 <p>pytopicgram is a Python library designed for extracting, processing, and
 topic modeling messages from Telegram channels. It provides a
 comprehensive pipeline for data collection, preprocessing, metrics
@@ -103,8 +106,8 @@ discourse on Telegram.</p>
 <h2>Citation<a class="headerlink" href="#citation" title="Link to this heading"></a></h2>
 <p><em>J. Gómez-Romero, J. Cantón-Correa, R. Pérez Mercado, F. Prados Abad, M.
 Molina-Solana, W. Fajardo</em>. <strong>pytopicgram: A library for data extraction
-and topic modeling from Telegram channels</strong>. September 2024.
-<a class="reference external" href="https://doi.org/10.5281/zenodo.13863008"><img alt="DOI:10.5281/zenodo.13863008" src="https://zenodo.org/badge/DOI/10.5281/zenodo.13863008.svg" /></a></p>
+and topic modeling from Telegram channels</strong>. SoftwareX 30, 102141 May 2025.
+<a class="reference external" href="https://doi.org/10.1016/j.softx.2025.102141"><img alt="DOI:10.1016/j.softx.2025.102141" src="https://img.shields.io/badge/doi-10.1016%2Fj.softx.2025.102141-b31b1b.svg" /></a></p>
 </section>
 <section id="features">
 <h2>Features<a class="headerlink" href="#features" title="Link to this heading"></a></h2>
@@ -156,12 +159,11 @@ using topic modeling. An OpenAI key can be provided (at extra cost) to
 generate topic descriptions in natural language.</p>
 <section id="running-the-complete-pipeline">
 <h3>Running the complete pipeline<a class="headerlink" href="#running-the-complete-pipeline" title="Link to this heading"></a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">cd</span> <span class="n">pytopicgram</span>
-<span class="n">python</span> <span class="n">main</span><span class="o">.</span><span class="n">py</span> \
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">pytopicgram</span><span class="o">.</span><span class="n">main</span> \
     <span class="o">--</span><span class="n">api_id</span> <span class="o">&lt;</span><span class="n">TELEGRAM_API_ID</span><span class="o">&gt;</span> <span class="o">--</span><span class="n">api_hash</span> <span class="o">&lt;</span><span class="n">TELEGRAM_API_HASH</span><span class="o">&gt;</span> \
     <span class="o">--</span><span class="n">start_date</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">01</span><span class="n">T00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> \
     <span class="o">--</span><span class="n">end_date</span> <span class="mi">2024</span><span class="o">-</span><span class="mi">09</span><span class="o">-</span><span class="mi">01</span><span class="n">T00</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span><span class="o">+</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span> \
-    <span class="o">--</span><span class="n">channels_file</span> <span class="n">config</span><span class="o">/</span><span class="n">channels_sample</span><span class="o">.</span><span class="n">csv</span> \
+    <span class="o">--</span><span class="n">channels_file</span> <span class="o">./</span><span class="n">pytopicgram</span><span class="o">/</span><span class="n">config</span><span class="o">/</span><span class="n">channels_sample</span><span class="o">.</span><span class="n">csv</span> \
     <span class="o">--</span><span class="n">openai_key</span> <span class="o">&lt;</span><span class="n">OPENAI_KEY</span><span class="o">&gt;</span> \
     <span class="o">--</span><span class="n">description</span> <span class="s2">&quot;Sample running, Aug 2024, using OpenAI API&quot;</span>
 </pre></div>
@@ -411,10 +413,10 @@ should be generated in the topic viewer.</p></td>
 <section id="using-modules">
 <h3>Using modules<a class="headerlink" href="#using-modules" title="Link to this heading"></a></h3>
 <p>To run any component of the library, you can use the <code class="docutils literal notranslate"><span class="pre">main</span></code> included
-in each one. For instance, use the following to run the <code class="docutils literal notranslate"><span class="pre">extractor</span></code>:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>pytopicgram
-python<span class="w"> </span>extractor.py<span class="w"> </span><span class="se">\</span>
-<span class="w">    </span>--file<span class="w"> </span>results/messages_nlp.csv<span class="w"> </span><span class="se">\</span>
+in each one. For instance, use the following (from the project root folder)
+to run the <code class="docutils literal notranslate"><span class="pre">extractor</span></code>:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pytopicgram.extractor<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--file<span class="w"> </span>./results/messages_nlp.csv<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--column<span class="w"> </span>message_nlp<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--output<span class="w"> </span>model.pkl<span class="w"> </span><span class="se">\</span>
 <span class="w">    </span>--openai_key<span class="w"> </span>&lt;OPENAI_KEY&gt;<span class="w"> </span><span class="se">\</span>
@@ -425,14 +427,14 @@ python<span class="w"> </span>extractor.py<span class="w"> </span><span class="s
 components of the pipeline. For instance, <code class="docutils literal notranslate"><span class="pre">snowball.py</span></code> demonstrates
 how to use the snowball technique to gather messages from related
 channels.</p>
-<p>To run the <code class="docutils literal notranslate"><span class="pre">snowball.py</span></code> example, use the following command:</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>pytopicgram
-python<span class="w"> </span>-m<span class="w"> </span>examples.snowball<span class="w"> </span><span class="se">\</span>
+<p>To run the <code class="docutils literal notranslate"><span class="pre">snowball.py</span></code> example, use the following command (from the
+project root folder):</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>-m<span class="w"> </span>pytopicgram.examples.snowball<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--api_id<span class="w"> </span>&lt;TELEGRAM_API_ID&gt;<span class="w"> </span>--api_hash<span class="w"> </span>&lt;TELEGRAM_API_HASH&gt;<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--start_date<span class="w"> </span><span class="m">2024</span>-08-30T00:00:00+00:00<span class="w"> </span>--end_date<span class="w"> </span><span class="m">2024</span>-08-31T23:59:59+00:00<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--channels_file<span class="w"> </span>./examples/snowball_channels_sample.csv<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--output_channels_file<span class="w"> </span>./examples/results/snowball_channels.csv<span class="w"> </span><span class="se">\</span>
-<span class="w">   </span>--output_messages_file<span class="w"> </span>./examples/results/snowball_messages.json<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--channels_file<span class="w"> </span>./pytopicgram/examples/snowball_channels_sample.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--output_channels_file<span class="w"> </span>./results/snowball_channels.csv<span class="w"> </span><span class="se">\</span>
+<span class="w">   </span>--output_messages_file<span class="w"> </span>./results/snowball_messages.json<span class="w"> </span><span class="se">\</span>
 <span class="w">   </span>--max_rounds<span class="w"> </span><span class="m">3</span>
 </pre></div>
 </div>

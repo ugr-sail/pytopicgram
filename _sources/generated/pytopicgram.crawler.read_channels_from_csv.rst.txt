@@ -1,0 +1,6 @@
+pytopicgram.crawler.read\_channels\_from\_csv
+=============================================
+
+.. currentmodule:: pytopicgram.crawler
+
+.. autofunction:: read_channels_from_csv

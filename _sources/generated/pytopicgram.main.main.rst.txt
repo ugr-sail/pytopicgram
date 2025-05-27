@@ -1,0 +1,6 @@
+pytopicgram.main.main
+=====================
+
+.. currentmodule:: pytopicgram.main
+
+.. autofunction:: main

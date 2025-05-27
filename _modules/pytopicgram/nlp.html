@@ -1,0 +1,308 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pytopicgram.nlp &mdash; pytopicgram  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pytopicgram
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html#pytopicgram">pytopicgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pytopicgram</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pytopicgram.nlp</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pytopicgram.nlp</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module provides functions for natural language processing (NLP) tasks, including reading data from CSV files, applying NLP techniques to text data, and performing sentiment analysis. The functions can be used as standalone scripts or integrated into other Python programs for text data processing and analysis.</span>
+
+<span class="sd">Functions:</span>
+
+<span class="sd">- read_dataframe_from_csv_file: Reads a CSV file and converts it into a pandas DataFrame.</span>
+<span class="sd">    - Parameters:</span>
+<span class="sd">        - csv_file_path (str): The file path to the CSV file.</span>
+
+<span class="sd">- apply_nlp: Applies NLP processing to a DataFrame containing messages.</span>
+<span class="sd">    - Parameters:</span>
+<span class="sd">        - df (pd.DataFrame): The DataFrame containing the messages.</span>
+<span class="sd">        - message_column (str): The name of the column in the DataFrame that contains the text to be processed.</span>
+<span class="sd">        - nlp_message_column (str): The name of the column to store the processed text.</span>
+<span class="sd">        - model (str, optional): The SpaCy model to use for NLP processing. Defaults to &#39;es_core_news_sm&#39;.</span>
+<span class="sd">        - sentence_splitter (bool, optional): Whether to split the text into sentences. Defaults to False.</span>
+<span class="sd">        - sentence_min_char (int, optional): The minimum number of characters for a sentence to be considered valid. Defaults to 50.</span>
+
+<span class="sd">Dependencies:</span>
+
+<span class="sd">- pandas: Provides high-performance, easy-to-use data structures and data analysis tools.</span>
+<span class="sd">- spacy: Offers advanced natural language processing capabilities in Python.</span>
+<span class="sd">- spacytextblob: Extends spaCy with TextBlob for sentiment analysis.</span>
+<span class="sd">- tqdm: Adds progress meters to loops to visualize progress.</span>
+<span class="sd">- argparse: Facilitates the creation of user-friendly command-line interfaces.</span>
+
+<span class="sd">This module is designed to work with Spanish language text and uses the Spanish language model from spaCy.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">spacy</span>
+<span class="kn">from</span> <span class="nn">spacytextblob.spacytextblob</span> <span class="kn">import</span> <span class="n">SpacyTextBlob</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">rich</span> <span class="kn">import</span> <span class="nb">print</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">pytopicgram</span> <span class="kn">import</span> <span class="n">regex_patterns</span>
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="read_dataframe_from_csv_file">
+<a class="viewcode-back" href="../../generated/pytopicgram.nlp.read_dataframe_from_csv_file.html#pytopicgram.nlp.read_dataframe_from_csv_file">[docs]</a>
+<span class="k">def</span> <span class="nf">read_dataframe_from_csv_file</span><span class="p">(</span><span class="n">csv_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads a CSV file and converts it into a pandas DataFrame.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - csv_file_path (str): The file path to the CSV file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - pd.DataFrame: A DataFrame containing the data from the CSV file.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Reading CSV file: </span><span class="si">{</span><span class="n">csv_file_path</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">csv_file_path</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[[green]OK[/]] (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows).&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+
+<div class="viewcode-block" id="apply_nlp">
+<a class="viewcode-back" href="../../generated/pytopicgram.nlp.apply_nlp.html#pytopicgram.nlp.apply_nlp">[docs]</a>
+<span class="k">def</span> <span class="nf">apply_nlp</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">message_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">nlp_message_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">model</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;es_core_news_sm&#39;</span><span class="p">,</span> <span class="n">sentence_splitter</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">sentence_min_char</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Applies NLP processing to the DataFrame containing messages.</span>
+
+<span class="sd">    This function processes the text of each message in the DataFrame using the SpaCy NLP pipeline, assuming the text messages are in Spanish. It performs sentiment analysis to determine polarity and subjectivity, and optionally splits the text into sentences. Each sentence (or the entire message if not split) is treated as a separate entry while preserving the original message metadata.</span>
+
+<span class="sd">    The output DataFrame includes:</span>
+<span class="sd">    - The original message data.</span>
+<span class="sd">    - The processed text in a new column.</span>
+<span class="sd">    - Sentiment analysis results (polarity and subjectivity).</span>
+<span class="sd">    - A unique identifier for each original message.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - df (pd.DataFrame): The DataFrame containing the messages to be processed.</span>
+<span class="sd">    - message_column (str): The name of the column in the DataFrame that contains the text to be processed.</span>
+<span class="sd">    - nlp_message_column (str): The name of the column in the output DataFrame that will contain the processed text.</span>
+<span class="sd">    - model (str): The name of the SpaCy model to use for tokenization. Defaults to &#39;es_core_news_sm&#39;.</span>
+<span class="sd">    - sentence_splitter (bool): If True, split messages into sentences. Defaults to False. Note that enumeration messages are split even when sentence_splitter is False. If True, enumeration_messages are not considered separately.</span>
+<span class="sd">    - sentence_min_char (int): Minimum number of characters for a sentence to be included. Defaults to 50.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    - pd.DataFrame: A new DataFrame with the original data, processed text, and extra attributes such as sentiment analysis results and message identifiers.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Load tokenizer, tagger, parser, NER and word vectors</span>
+    <span class="n">nlp</span> <span class="o">=</span> <span class="n">spacy</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="c1"># Add a pipeline comment to analyze polarity (whole message)</span>
+    <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="s2">&quot;spacytextblob&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Add a pipeline component to split text into sentences </span>
+    <span class="k">if</span> <span class="n">sentence_splitter</span><span class="p">:</span>   
+        <span class="n">nlp</span><span class="o">.</span><span class="n">add_pipe</span><span class="p">(</span><span class="s2">&quot;sentencizer&quot;</span><span class="p">)</span> 
+
+    <span class="c1"># Process the message of each row and accumulate processed rows in a list before creating DataFrame</span>
+    <span class="n">processed_data_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="n">msg_abs_id</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">(),</span> <span class="n">total</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">desc</span><span class="o">=</span><span class="s2">&quot;Applying NLP to messages...&quot;</span><span class="p">):</span>
+        <span class="n">msg_text</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">message_column</span><span class="p">]</span>
+        
+        <span class="c1"># Skip to next row if len of msg_text is smaller than sentence_min_char</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">msg_text</span><span class="p">))</span> <span class="o">&lt;</span> <span class="n">sentence_min_char</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">nlp</span><span class="p">(</span><span class="n">msg_text</span><span class="p">)</span>
+        
+        <span class="c1"># Sentiment analysis</span>
+        <span class="n">polarity</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">polarity</span>
+        <span class="n">subjectivity</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">_</span><span class="o">.</span><span class="n">blob</span><span class="o">.</span><span class="n">subjectivity</span>
+        
+        <span class="c1"># Sentence splitter + enumeration finder</span>
+
+        <span class="k">if</span> <span class="n">sentence_splitter</span><span class="p">:</span>
+            <span class="c1"># - sentences are split only if sentence_splitter. This superseeds enumeration_matches.</span>
+            <span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span><span class="n">sent</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">sent</span> <span class="ow">in</span> <span class="n">doc</span><span class="o">.</span><span class="n">sents</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># - enumerations are split even if sentence_splitter is False</span>
+            <span class="n">enumeration_matches</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">regex_patterns</span><span class="o">.</span><span class="n">NUMBERED_LIST</span><span class="p">,</span> <span class="n">msg_text</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">enumeration_matches</span><span class="p">:</span>
+                <span class="n">sentences</span> <span class="o">=</span> <span class="n">enumeration_matches</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">sentences</span> <span class="o">=</span> <span class="p">[</span><span class="n">msg_text</span><span class="p">]</span>
+
+        <span class="c1"># Create new rows, skipping sentences with less than sentence_min_char characters</span>
+        <span class="k">for</span> <span class="n">sentence</span> <span class="ow">in</span> <span class="n">sentences</span><span class="p">:</span>
+            
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">sentence</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">sentence_min_char</span><span class="p">:</span>
+                <span class="n">new_row</span> <span class="o">=</span> <span class="n">row</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+                <span class="n">new_row</span><span class="p">[</span><span class="n">nlp_message_column</span><span class="p">]</span> <span class="o">=</span> <span class="n">sentence</span>
+                <span class="n">new_row</span><span class="p">[</span><span class="s1">&#39;polarity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">polarity</span>
+                <span class="n">new_row</span><span class="p">[</span><span class="s1">&#39;subjectivity&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">subjectivity</span>
+                <span class="n">new_row</span><span class="p">[</span><span class="s1">&#39;msg_abs_id&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">msg_abs_id</span>
+                <span class="n">processed_data_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">new_row</span><span class="p">)</span>
+
+        <span class="c1"># Increment absolute message id</span>
+        <span class="n">msg_abs_id</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Building the processed data frame...&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Create a DataFrame from the processed rows list</span>
+    <span class="n">processed_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">processed_data_list</span><span class="p">)</span>
+
+    <span class="c1"># Remove duplicates</span>
+    <span class="c1"># print(&quot;Removing duplicated sentences.&quot;) if sentence_splitter else print(&quot;Removing duplicated messages.&quot;)</span>
+    <span class="c1"># processed_df = processed_df.drop_duplicates(subset=[nlp_message_column])</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;[[green]OK[/]] NLP has been successfully applied.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">processed_df</span></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="write_to_csv_file">
+<a class="viewcode-back" href="../../generated/pytopicgram.nlp.write_to_csv_file.html#pytopicgram.nlp.write_to_csv_file">[docs]</a>
+<span class="k">def</span> <span class="nf">write_to_csv_file</span><span class="p">(</span><span class="n">df</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">csv_file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Writes the provided DataFrame to a CSV file.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    - df (pd.DataFrame): The DataFrame to be written to the CSV file.</span>
+<span class="sd">    - csv_file_path (str): The file path where the CSV file will be written.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing data frame to CSV file: </span><span class="si">{</span><span class="n">csv_file_path</span><span class="si">}</span><span class="s2"> &quot;</span><span class="p">,</span> <span class="n">end</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">csv_file_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="o">.</span><span class="n">QUOTE_ALL</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[[green]OK[/]] (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span><span class="si">}</span><span class="s2"> rows).&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../generated/pytopicgram.nlp.main.html#pytopicgram.nlp.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="c1"># Create the parser</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Preprocess the messages in the CSV file provided by preprocessor.py.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Add the arguments</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;--file&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The path to the CSV file containing the messages.&quot;</span><span class="p">)</span> 
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--output&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The CSV output file for output data.&quot;</span><span class="p">)</span>   
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-t&#39;</span><span class="p">,</span> <span class="s1">&#39;--message&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;message&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The name of the column in the DataFrame that contains the text to be processed, i.e. the message.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="s1">&#39;--split&#39;</span><span class="p">,</span>  <span class="n">action</span><span class="o">=</span><span class="s2">&quot;store_true&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Split messages into sentences. Defaults to false.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Parse the arguments</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">input_file_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">file</span>
+    <span class="n">output_file_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span>
+    <span class="n">text_column</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">message</span>
+    <span class="n">split</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">split</span>
+
+    <span class="c1"># Read data</span>
+    <span class="n">df_input</span> <span class="o">=</span> <span class="n">read_dataframe_from_csv_file</span><span class="p">(</span><span class="n">input_file_path</span><span class="p">)</span>
+
+    <span class="c1"># Apply NLP</span>
+    <span class="n">df_output</span> <span class="o">=</span> <span class="n">apply_nlp</span><span class="p">(</span><span class="n">df_input</span><span class="p">,</span> <span class="n">text_column</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">text_column</span><span class="si">}</span><span class="s1">_nlp&#39;</span><span class="p">,</span> <span class="n">sentence_splitter</span><span class="o">=</span><span class="n">split</span><span class="p">)</span>
+
+    <span class="c1"># Write results</span>
+    <span class="n">write_to_csv_file</span><span class="p">(</span><span class="n">df_output</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, SAIL.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

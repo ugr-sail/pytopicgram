@@ -1,0 +1,439 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>pytopicgram.crawler &mdash; pytopicgram  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=92fd9be5" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            pytopicgram
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../overview.html#pytopicgram">pytopicgram</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">Source code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../license.html">License</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">pytopicgram</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">pytopicgram.crawler</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for pytopicgram.crawler</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module facilitates the extraction of messages from Telegram channels. It offers functionalities to read a list of channels from a CSV file, connect to the Telegram API, and retrieve messages from specified channels within a given date range. The retrieved messages are then saved to a specified output file.</span>
+
+<span class="sd">The module can operate as a standalone script or be imported into other scripts for further analysis or processing.</span>
+
+<span class="sd">Functions:</span>
+
+<span class="sd">- read_channels_from_csv: Reads channel information from a CSV file.</span>
+<span class="sd">    - Parameters:</span>
+<span class="sd">        - file_path (str): The path to the CSV file containing the channel information.</span>
+
+<span class="sd">- process_channels: Processes each channel, retrieves messages within the specified date range, and saves them to an output file.</span>
+<span class="sd">    - Parameters:</span>
+<span class="sd">        - channels_list (list): A list of channels to be processed.</span>
+<span class="sd">        - start_date (str): The start date for message retrieval in ISO format.</span>
+<span class="sd">        - end_date (str): The end date for message retrieval in ISO format.</span>
+<span class="sd">        - api_id (int): The Telegram API ID.</span>
+<span class="sd">        - api_hash (str): The Telegram API hash.</span>
+<span class="sd">        - output_file_name (str): The name of the output file where messages will be saved.</span>
+<span class="sd">        - append (bool, optional): Whether to append to the output file if it exists. Defaults to False.</span>
+
+<span class="sd">Dependencies:</span>
+
+<span class="sd">- telethon: Telegram client library for Python.</span>
+<span class="sd">- asyncio: Library to write concurrent code using the async/await syntax.</span>
+<span class="sd">- csv: Module to read and write tabular data in CSV format.</span>
+<span class="sd">- tqdm: Library for adding progress meters to loops.</span>
+<span class="sd">- argparse: Parser for command-line options, arguments, and sub-commands.</span>
+<span class="sd">- json: Module to work with JSON data.</span>
+<span class="sd">- re: Provides support for regular expressions in Python.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">from</span> <span class="nn">telethon</span> <span class="kn">import</span> <span class="n">TelegramClient</span><span class="p">,</span> <span class="n">types</span>
+<span class="kn">from</span> <span class="nn">telethon.tl.functions.channels</span> <span class="kn">import</span> <span class="n">GetFullChannelRequest</span><span class="p">,</span> <span class="n">GetChannelRecommendationsRequest</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+<span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+<span class="kn">import</span> <span class="nn">urlextract</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">from</span> <span class="nn">rich</span> <span class="kn">import</span> <span class="nb">print</span>
+<span class="kn">from</span> <span class="nn">pytopicgram</span> <span class="kn">import</span> <span class="n">regex_patterns</span>
+
+<span class="c1"># The names and URLs of every channel must be present in the CSV</span>
+<span class="n">channel_name_csv</span> <span class="o">=</span> <span class="s1">&#39;Channel&#39;</span>
+<span class="n">channel_name_df</span>  <span class="o">=</span> <span class="s1">&#39;channel_name&#39;</span>
+
+<span class="n">url_name_csv</span>     <span class="o">=</span> <span class="s1">&#39;URL&#39;</span>
+<span class="n">url_name_df</span>      <span class="o">=</span> <span class="s1">&#39;url&#39;</span>
+
+<span class="n">user_name_csv</span>    <span class="o">=</span> <span class="s1">&#39;User&#39;</span>
+<span class="n">user_name_df</span>     <span class="o">=</span> <span class="s1">&#39;user&#39;</span>
+
+<span class="n">cluster_csv</span>      <span class="o">=</span> <span class="s1">&#39;Tag&#39;</span>
+<span class="n">cluster_df</span>       <span class="o">=</span> <span class="s1">&#39;cluster&#39;</span>
+
+<span class="c1"># This dictionary represents pairs of headers found in csv files vs header names to be used</span>
+<span class="c1"># More columns can be present in .csv file, but at least the ones listed here should appear</span>
+<span class="c1"># The values found in this dicctionary are expected to be appended to every message</span>
+<span class="n">header_names</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="n">channel_name_csv</span> <span class="p">:</span> <span class="n">channel_name_df</span><span class="p">,</span>
+    <span class="n">url_name_csv</span> <span class="p">:</span> <span class="n">url_name_df</span><span class="p">,</span>
+    <span class="n">user_name_csv</span> <span class="p">:</span> <span class="n">user_name_df</span><span class="p">,</span>
+    <span class="n">cluster_csv</span>  <span class="p">:</span> <span class="n">cluster_df</span>
+<span class="p">}</span>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="read_channels_from_csv">
+<a class="viewcode-back" href="../../generated/pytopicgram.crawler.read_channels_from_csv.html#pytopicgram.crawler.read_channels_from_csv">[docs]</a>
+<span class="k">def</span> <span class="nf">read_channels_from_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">delimiter</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reads channel information from a CSV file and returns a DataFrame with channel details.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        file_path (str): The path to the CSV file containing the channel information.</span>
+<span class="sd">        delimiter (str): Character or regex pattern used to separate fields in the CSV file.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: A DataFrame containing the channel details with standardized column names.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reading channels from CSV...&quot;</span><span class="p">)</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">header_names</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">errors</span><span class="o">=</span><span class="s1">&#39;raise&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>            
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[[orange]WARNING[/]] </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2"> </span><span class="se">\n</span><span class="s2">Expecting </span><span class="si">{</span><span class="n">header_names</span><span class="si">}</span><span class="s2"> columns, </span><span class="se">\n</span><span class="s2">but found </span><span class="si">{</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">df</span></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="process_channels">
+<a class="viewcode-back" href="../../generated/pytopicgram.crawler.process_channels.html#pytopicgram.crawler.process_channels">[docs]</a>
+<span class="k">async</span> <span class="k">def</span> <span class="nf">process_channels</span><span class="p">(</span><span class="n">channels</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">start_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> <span class="n">end_date</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="p">,</span> 
+                           <span class="n">api_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">api_hash</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> 
+                           <span class="n">output_file_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">channels_file_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;channels_list_details.csv&quot;</span><span class="p">,</span> 
+                           <span class="n">append</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+                           <span class="n">by_url</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+                           <span class="n">photos</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Asynchronously processes a list of channels, fetching messages within a specified date range and saving them to an output file. </span>
+
+<span class="sd">    Since messages are retrieved in batches, the output may include messages older than start_date.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">        channels (pd.DataFrame): A DataFrame where each row contains details of a channel to be processed.</span>
+<span class="sd">        start_date (datetime.datetime): The start date from which messages should be fetched.</span>
+<span class="sd">        end_date (datetime.datetime): The end date until which messages should be fetched.</span>
+<span class="sd">        api_id (int): The API ID for the Telegram client.</span>
+<span class="sd">        api_hash (str): The API hash for the Telegram client.</span>
+<span class="sd">        output_file_name (str): The name of the JSON file where the messages should be saved.</span>
+<span class="sd">        append (bool, optional): Determines whether to append to the output file if it already exists. Defaults to False.</span>
+<span class="sd">        photos (bool, optional): Determines whether to download photos of not. Defaults to True.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Starting client...&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+    <span class="n">client</span> <span class="o">=</span> <span class="n">TelegramClient</span><span class="p">(</span><span class="s1">&#39;session_name&#39;</span><span class="p">,</span> <span class="n">api_id</span><span class="p">,</span> <span class="n">api_hash</span><span class="p">)</span>
+    <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;[[green]OK[/]]&quot;</span><span class="p">)</span>
+
+    <span class="n">filtered_messages</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">photo_folder</span> <span class="o">=</span>  <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">),</span> <span class="s2">&quot;photos&quot;</span><span class="p">)</span>
+
+    <span class="n">channels_metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">()</span>
+
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Retrieving messages from </span><span class="si">{</span><span class="n">start_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2"> to </span><span class="si">{</span><span class="n">end_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="n">url_extractor</span> <span class="o">=</span> <span class="n">urlextract</span><span class="o">.</span><span class="n">URLExtract</span><span class="p">()</span>
+    <span class="c1"># If the URL is right after a punctuation mark, it is not included</span>
+    <span class="c1"># in the URL pattern, so we need to extract it separately</span>
+    <span class="n">url_pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">regex_patterns</span><span class="o">.</span><span class="n">AUX_URL</span><span class="p">,</span> <span class="n">re</span><span class="o">.</span><span class="n">IGNORECASE</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">channel_info</span> <span class="ow">in</span> <span class="n">channels</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+        <span class="n">channel_name</span> <span class="o">=</span> <span class="n">channel_info</span><span class="p">[</span><span class="n">channel_name_df</span><span class="p">]</span>
+        <span class="n">channel_url</span> <span class="o">=</span> <span class="n">channel_info</span><span class="p">[</span><span class="n">url_name_df</span><span class="p">]</span>
+        <span class="n">channel_cluster</span> <span class="o">=</span> <span class="n">channel_info</span><span class="p">[</span><span class="n">cluster_df</span><span class="p">]</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">by_url</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> at </span><span class="si">{</span><span class="n">channel_url</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">channel_url</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">channel_id_query</span> <span class="o">=</span> <span class="n">channel_info</span><span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">]</span> 
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Processing channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> with id </span><span class="si">{</span><span class="n">channel_id_query</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">index</span><span class="o">+</span><span class="mi">1</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">channels</span><span class="p">)</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+                <span class="n">channel</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_entity</span><span class="p">(</span><span class="n">channel_id_query</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: The channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> with URL </span><span class="si">{</span><span class="n">channel_url</span><span class="si">}</span><span class="s2"> does not exist or is not accessible.&quot;</span><span class="p">)</span>
+            <span class="k">continue</span>  <span class="c1"># Skip to the next channel</span>
+
+        <span class="c1"># Get channel metadata</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;... getting channel metadata&quot;</span><span class="p">)</span>
+        <span class="n">channel_dict</span> <span class="o">=</span> <span class="n">channel</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+        <span class="c1"># - append existing data</span>
+        <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;channel_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_name</span>
+        <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;channel_url&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_url</span>
+        <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;cluster&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_cluster</span>
+
+        <span class="c1"># - profile photo</span>
+        <span class="k">if</span> <span class="n">photos</span><span class="p">:</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">photo_folder</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">download_profile_photo</span><span class="p">(</span><span class="n">channel_url</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">photo_folder</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2">.jpg&quot;</span><span class="p">)</span>
+            <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;photo_file&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;photos/</span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2">.jpg&quot;</span>
+
+        <span class="c1"># - suscriptors</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">full_info_obj</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">(</span><span class="n">GetFullChannelRequest</span><span class="p">(</span><span class="n">channel_url</span><span class="p">))</span>
+            <span class="n">suscriptors</span> <span class="o">=</span> <span class="n">full_info_obj</span><span class="o">.</span><span class="n">full_chat</span><span class="o">.</span><span class="n">participants_count</span>
+            <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;suscriptors_api&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">suscriptors</span>
+        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Cannot get channel info, probably misformed or non-reachable id </span><span class="si">{</span><span class="n">channel_url</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">continue</span> <span class="c1"># Skip to the next channel</span>
+
+        <span class="c1"># - description</span>
+        <span class="n">description</span> <span class="o">=</span> <span class="n">full_info_obj</span><span class="o">.</span><span class="n">full_chat</span><span class="o">.</span><span class="n">about</span>
+        <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">description</span>
+
+        <span class="n">urls_in_description</span> <span class="o">=</span> <span class="n">url_pattern</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">description</span><span class="p">)</span>
+        <span class="n">urls_in_description</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">url_extractor</span><span class="o">.</span><span class="n">find_urls</span><span class="p">(</span><span class="n">description</span><span class="p">))</span>
+        <span class="n">set_urls</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">urls_in_description</span><span class="p">)</span>
+        <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;urls_in_description&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">set_urls</span><span class="p">)</span>
+
+        <span class="c1"># - reactions and comments enabled</span>
+        <span class="n">comments_enabled</span> <span class="o">=</span> <span class="n">full_info_obj</span><span class="o">.</span><span class="n">chats</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">forum</span>
+        <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;comments_enabled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">comments_enabled</span>
+        <span class="n">reactions_enabled</span> <span class="o">=</span> <span class="n">full_info_obj</span><span class="o">.</span><span class="n">full_chat</span><span class="o">.</span><span class="n">available_reactions</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+        <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;reactions_enabled&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">reactions_enabled</span>
+
+        <span class="c1"># - similar channels</span>
+        <span class="n">similar_channels_obj</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="p">(</span><span class="n">GetChannelRecommendationsRequest</span><span class="p">(</span><span class="n">channel_url</span><span class="p">))</span>
+        <span class="n">similar_channels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">ch</span> <span class="ow">in</span> <span class="n">similar_channels_obj</span><span class="o">.</span><span class="n">chats</span><span class="p">:</span>
+            <span class="n">similar_channel_info</span> <span class="o">=</span> <span class="p">{</span>
+                <span class="s1">&#39;username&#39;</span><span class="p">:</span> <span class="n">ch</span><span class="o">.</span><span class="n">username</span><span class="p">,</span>
+                <span class="s1">&#39;title&#39;</span><span class="p">:</span> <span class="n">ch</span><span class="o">.</span><span class="n">title</span><span class="p">,</span>
+                <span class="s1">&#39;id&#39;</span><span class="p">:</span> <span class="n">ch</span><span class="o">.</span><span class="n">id</span>
+            <span class="p">}</span>
+            <span class="n">similar_channels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">similar_channel_info</span><span class="p">)</span>
+        <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;similar_channels&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">similar_channels</span>
+
+        <span class="c1"># - pinned message</span>
+        <span class="n">pinned_message</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_messages</span><span class="p">(</span><span class="n">channel_url</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="n">types</span><span class="o">.</span><span class="n">InputMessagePinned</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">pinned_message</span><span class="p">:</span>
+            <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;pinned_message&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinned_message</span>
+            <span class="n">channel_dict</span><span class="p">[</span><span class="s1">&#39;pinned_message_text&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pinned_message</span><span class="o">.</span><span class="n">message</span>
+        
+        <span class="c1"># - add channel_dict to channels_metadata as a row</span>
+        <span class="n">channels_metadata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">channels_metadata</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">([</span><span class="n">channel_dict</span><span class="p">])],</span> <span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Get messages in batches</span>
+        <span class="n">filtered_messages_in_channel</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">batch_size</span> <span class="o">=</span> <span class="mi">100</span>
+        <span class="n">total_fetched</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="n">date_last_fetched</span> <span class="o">=</span> <span class="n">end_date</span>
+        <span class="n">date_delta</span> <span class="o">=</span> <span class="p">(</span><span class="n">end_date</span> <span class="o">-</span> <span class="n">start_date</span><span class="p">)</span><span class="o">.</span><span class="n">days</span>
+        
+        <span class="k">with</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">total</span><span class="o">=</span><span class="n">date_delta</span><span class="p">,</span> <span class="n">desc</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;... fetching messages by day&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">pbar</span><span class="p">:</span> 
+            <span class="k">while</span> <span class="n">date_last_fetched</span> <span class="o">&gt;=</span> <span class="n">start_date</span><span class="p">:</span>
+                <span class="k">try</span><span class="p">:</span>
+                    <span class="n">messages_batch</span> <span class="o">=</span> <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">get_messages</span><span class="p">(</span><span class="n">channel</span><span class="p">,</span> <span class="n">limit</span><span class="o">=</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">offset_date</span><span class="o">=</span><span class="n">end_date</span><span class="p">,</span> <span class="n">add_offset</span><span class="o">=</span><span class="n">total_fetched</span><span class="p">)</span>
+                <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Messages from channel </span><span class="si">{</span><span class="n">channel_name</span><span class="si">}</span><span class="s2"> older than </span><span class="si">{</span><span class="n">date_last_fetched</span><span class="si">}</span><span class="s2"> could not be fetched.&quot;</span><span class="p">)</span>
+                    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error code: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+                    <span class="k">break</span>  <span class="c1"># Skip to the next channel</span>
+
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">messages_batch</span><span class="p">:</span>
+                    <span class="k">break</span>
+
+                <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">messages_batch</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">date</span> <span class="o">&gt;=</span> <span class="n">start_date</span> <span class="ow">and</span> <span class="n">msg</span><span class="o">.</span><span class="n">text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                            <span class="n">msg_ext</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+                            <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">header_names</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+                                <span class="n">msg_ext</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">channel_info</span><span class="p">[</span><span class="n">col</span><span class="p">]</span>
+                            
+                            <span class="n">filtered_messages_in_channel</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">msg_ext</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="k">break</span>                
+                
+                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">date_last_fetched</span><span class="o">-</span><span class="n">messages_batch</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">date</span><span class="p">)</span><span class="o">.</span><span class="n">days</span><span class="p">)</span>
+                
+                <span class="n">date_last_fetched</span> <span class="o">=</span> <span class="n">messages_batch</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">date</span>
+                <span class="n">fetched_count</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">messages_batch</span><span class="p">)</span>                
+                <span class="n">total_fetched</span> <span class="o">+=</span> <span class="n">fetched_count</span>
+                
+            <span class="n">pbar</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="n">pbar</span><span class="o">.</span><span class="n">total</span>
+            <span class="n">pbar</span><span class="o">.</span><span class="n">refresh</span><span class="p">()</span>            
+        
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;... found </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">filtered_messages_in_channel</span><span class="p">)</span><span class="si">}</span><span class="s2"> messages&quot;</span><span class="p">)</span>
+        <span class="c1"># if filtered_messages_in_channel:</span>
+        <span class="c1">#    print(f&quot;... date of the oldest message fetched: {date_last_fetched.strftime(&#39;%Y-%m-%d %H:%M:%S&#39;)}&quot;)</span>
+        <span class="n">filtered_messages</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">filtered_messages_in_channel</span><span class="p">)</span>
+    
+    <span class="c1"># Write filtered_messages to JSON file</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Writing messages to JSON file </span><span class="si">{</span><span class="n">output_file_name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">do_append</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span> <span class="k">if</span> <span class="n">append</span> <span class="k">else</span> <span class="s1">&#39;w&#39;</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">,</span> <span class="n">do_append</span><span class="p">,</span> <span class="n">newline</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">filtered_messages</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>  
+
+    <span class="c1"># Write channel_dict to CSV file</span>
+    <span class="n">channels_csv_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_file_name</span><span class="p">),</span> <span class="n">channels_file_name</span><span class="p">)</span>
+    <span class="n">channels_metadata</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">channels_csv_path</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">quoting</span><span class="o">=</span><span class="n">csv</span><span class="o">.</span><span class="n">QUOTE_NONNUMERIC</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Extended channel information saved to </span><span class="si">{</span><span class="n">channels_csv_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+    <span class="k">await</span> <span class="n">client</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+    
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Process finished. Saved </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">filtered_messages</span><span class="p">)</span><span class="si">}</span><span class="s2"> messages in </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">channels_metadata</span><span class="p">)</span><span class="si">}</span><span class="s2"> channels.&quot;</span><span class="p">)</span></div>
+
+
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<span class="c1"># --------------------------------------------------------------------------------</span>
+<div class="viewcode-block" id="main">
+<a class="viewcode-back" href="../../generated/pytopicgram.crawler.main.html#pytopicgram.crawler.main">[docs]</a>
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>        
+    <span class="c1"># Create the parser</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s2">&quot;Download messages from channels specified in a CSV file within a date range.&quot;</span><span class="p">)</span>
+
+    <span class="c1"># Add the arguments</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-f&#39;</span><span class="p">,</span> <span class="s1">&#39;--file&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The path to the CSV file containing the channels.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-s&#39;</span><span class="p">,</span> <span class="s1">&#39;--start_date&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The start date in the format &#39;YYYY-MM-DDTHH:MM:SS+00:00&#39;. Defaults to today&#39;s midnight.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-e&#39;</span><span class="p">,</span> <span class="s1">&#39;--end_date&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">tzinfo</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">timezone</span><span class="o">.</span><span class="n">utc</span><span class="p">)</span><span class="o">.</span><span class="n">isoformat</span><span class="p">(),</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The end date in the format &#39;YYYY-MM-DDTHH:MM:SS+00:00&#39;. Defaults to now.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-o&#39;</span><span class="p">,</span> <span class="s1">&#39;--output&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The JSON output file for the messages.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-a&#39;</span><span class="p">,</span> <span class="s1">&#39;--append&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s1">&#39;store_true&#39;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;Append to the output file if included. Defaults to False.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-i&#39;</span><span class="p">,</span> <span class="s1">&#39;--api_id&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The API ID for the Telegram client.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-p&#39;</span><span class="p">,</span> <span class="s1">&#39;--api_hash&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The API hash for the Telegram client.&quot;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;-d&#39;</span><span class="p">,</span> <span class="s1">&#39;--delimiter&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s2">&quot;The API hash for the Telegram client.&quot;</span><span class="p">)</span>
+    
+    <span class="c1"># Parse the arguments</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="n">csv_file_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">file</span>
+    <span class="n">start_date_str</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">start_date</span>
+    <span class="n">end_date_str</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">end_date</span>
+    <span class="n">output_file_path</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">output</span>
+    <span class="n">append</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">append</span>
+    <span class="n">api_id</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">api_id</span>
+    <span class="n">api_hash</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">api_hash</span>
+    <span class="n">delimiter</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">delimiter</span>
+
+    <span class="c1"># Get channel list from CSV file</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">channels_list</span> <span class="o">=</span> <span class="n">read_channels_from_csv</span><span class="p">(</span><span class="n">csv_file_path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Read </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">channels_list</span><span class="p">)</span><span class="si">}</span><span class="s2"> channels from </span><span class="si">{</span><span class="n">csv_file_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">FileNotFoundError</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: The file </span><span class="si">{</span><span class="n">csv_file_path</span><span class="si">}</span><span class="s2"> does not exist.&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">csv</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: Problem reading the file </span><span class="si">{</span><span class="n">csv_file_path</span><span class="si">}</span><span class="s2"> at line </span><span class="si">{</span><span class="n">e</span><span class="o">.</span><span class="n">line_num</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Get dates</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">start_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">start_date_str</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S%z&#39;</span><span class="p">)</span>
+        <span class="n">end_date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">end_date_str</span><span class="p">,</span> <span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%S%z&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Run crawler process</span>
+    <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">process_channels</span><span class="p">(</span><span class="n">channels_list</span><span class="p">,</span> <span class="n">start_date</span><span class="p">,</span> <span class="n">end_date</span><span class="p">,</span> <span class="n">api_id</span><span class="p">,</span> <span class="n">api_hash</span><span class="p">,</span> <span class="n">output_file_path</span><span class="p">,</span> <span class="n">append</span><span class="o">=</span><span class="n">append</span><span class="p">))</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025, SAIL.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+pytopicgram.metrics\_calculator.main
+====================================
+
+.. currentmodule:: pytopicgram.metrics_calculator
+
+.. autofunction:: main

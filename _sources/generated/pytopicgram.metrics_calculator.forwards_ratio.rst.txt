@@ -1,0 +1,6 @@
+pytopicgram.metrics\_calculator.forwards\_ratio
+===============================================
+
+.. currentmodule:: pytopicgram.metrics_calculator
+
+.. autofunction:: forwards_ratio

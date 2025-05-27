@@ -7,19 +7,19 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>pytopicgram &mdash; pytopicgram  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=92fd9be5" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../_static/doctools.js?v=9a2dae69"></script>
       <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="pytopicgram.regex_patterns" href="pytopicgram.regex_patterns.html" />
+    <link rel="next" title="pytopicgram.crawler" href="pytopicgram.crawler.html" />
     <link rel="prev" title="Source code" href="../api.html" /> 
 </head>
 
@@ -45,9 +45,18 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../overview.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../overview.html#pytopicgram">pytopicgram</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../api.html">Source code</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">pytopicgram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="pytopicgram.crawler.html">pytopicgram.crawler</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytopicgram.extractor.html">pytopicgram.extractor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytopicgram.main.html">pytopicgram.main</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytopicgram.metrics_calculator.html">pytopicgram.metrics_calculator</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytopicgram.nlp.html">pytopicgram.nlp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytopicgram.preprocessing_extra.html">pytopicgram.preprocessing_extra</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytopicgram.preprocessor.html">pytopicgram.preprocessor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="pytopicgram.regex_patterns.html">pytopicgram.regex_patterns</a></li>
+<li class="toctree-l3"><a class="reference internal" href="pytopicgram.viewer.html">pytopicgram.viewer</a></li>
 </ul>
 </li>
 </ul>
@@ -86,8 +95,32 @@
 <p class="rubric">Modules</p>
 <table class="autosummary longtable docutils align-default">
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="pytopicgram.regex_patterns.html#module-pytopicgram.regex_patterns" title="pytopicgram.regex_patterns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">regex_patterns</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytopicgram.crawler.html#module-pytopicgram.crawler" title="pytopicgram.crawler"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytopicgram.crawler</span></code></a></p></td>
+<td><p>This module facilitates the extraction of messages from Telegram channels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytopicgram.extractor.html#module-pytopicgram.extractor" title="pytopicgram.extractor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytopicgram.extractor</span></code></a></p></td>
+<td><p>This module is designed for extracting and processing text data from CSV files and training a BERTopic model on the extracted data.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytopicgram.main.html#module-pytopicgram.main" title="pytopicgram.main"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytopicgram.main</span></code></a></p></td>
+<td><p>This module is designed to automatically execute the crawler -&gt; preprocessor -&gt; metrics -&gt; extractor -&gt; viewer pipeline</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytopicgram.metrics_calculator.html#module-pytopicgram.metrics_calculator" title="pytopicgram.metrics_calculator"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytopicgram.metrics_calculator</span></code></a></p></td>
+<td><p>This module facilitates the calculation of various metrics for a dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytopicgram.nlp.html#module-pytopicgram.nlp" title="pytopicgram.nlp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytopicgram.nlp</span></code></a></p></td>
+<td><p>This module provides functions for natural language processing (NLP) tasks, including reading data from CSV files, applying NLP techniques to text data, and performing sentiment analysis.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytopicgram.preprocessing_extra.html#module-pytopicgram.preprocessing_extra" title="pytopicgram.preprocessing_extra"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytopicgram.preprocessing_extra</span></code></a></p></td>
+<td><p>This module provides additional preprocessing functions for data manipulation.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytopicgram.preprocessor.html#module-pytopicgram.preprocessor" title="pytopicgram.preprocessor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytopicgram.preprocessor</span></code></a></p></td>
+<td><p>This module is designed for preprocessing messages extracted from Telegram channels.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="pytopicgram.regex_patterns.html#module-pytopicgram.regex_patterns" title="pytopicgram.regex_patterns"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytopicgram.regex_patterns</span></code></a></p></td>
 <td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="pytopicgram.viewer.html#module-pytopicgram.viewer" title="pytopicgram.viewer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pytopicgram.viewer</span></code></a></p></td>
+<td><p>This module provides tools for viewing and analyzing the results of a BERTopic model.</p></td>
 </tr>
 </tbody>
 </table>
@@ -98,7 +131,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="../api.html" class="btn btn-neutral float-left" title="Source code" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="pytopicgram.regex_patterns.html" class="btn btn-neutral float-right" title="pytopicgram.regex_patterns" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pytopicgram.crawler.html" class="btn btn-neutral float-right" title="pytopicgram.crawler" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
