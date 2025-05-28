@@ -24,3 +24,6 @@ docs/build
 # python
 build
 *.egg-info
+
+# vscode configuration
+.vscode

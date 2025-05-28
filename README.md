@@ -24,7 +24,7 @@ To install the required dependencies and run:
 
 ```
 pip install -r requirements.txt
-python main.py
+python -m pytopicgram.main
 ```
 
 ### Docker (recommended)
