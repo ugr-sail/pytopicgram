@@ -3,7 +3,9 @@
 pytopicgram is a Python library designed for extracting, processing, and topic modeling messages from Telegram channels. It provides a comprehensive pipeline for data collection, preprocessing, metrics calculation, natural language processing, and topic modeling, making it a powerful tool for researchers and analysts investigating public discourse on Telegram.
 
 ## Citation
-*J. Gómez-Romero, J. Cantón-Correa, R. Pérez Mercado, F. Prados Abad, M. Molina-Solana, W. Fajardo*. **pytopicgram: A library for data extraction and topic modeling from Telegram channels**. September 2024. [![arXiv](https://img.shields.io/badge/arXiv-2502.04882-b31b1b.svg)](https://arxiv.org/abs/2502.04882)
+*J. Gómez-Romero, J. Cantón-Correa, R. Pérez Mercado, F. Prados Abad, M. Molina-Solana, W. Fajardo*. **pytopicgram: A library for data extraction and topic modeling from Telegram channels**. SoftwareX 30, 102141 2025. [![DOI](https://img.shields.io/badge/doi-10.1016%2Fj.softx.2025.102141-b31b1b)](https://doi.org/10.1016/j.softx.2025.102141)
+
+
 
 
 ## Features
@@ -22,7 +24,7 @@ To install the required dependencies and run:
 
 ```
 pip install -r requirements.txt
-python main.py
+python -m pytopicgram.main
 ```
 
 ### Docker (recommended)
@@ -39,12 +41,11 @@ You can run the entire pipeline through the `main.py` script. The following comm
 
 ### Running the complete pipeline
 ```
-cd pytopicgram
-python main.py \
+python -m pytopicgram.main \
     --api_id <TELEGRAM_API_ID> --api_hash <TELEGRAM_API_HASH> \
     --start_date 2024-08-01T00:00:00+00:00 \
     --end_date 2024-09-01T00:00:00+00:00 \
-    --channels_file config/channels_sample.csv \
+    --channels_file ./pytopicgram/config/channels_sample.csv \
     --openai_key <OPENAI_KEY> \
     --description "Sample running, Aug 2024, using OpenAI API"
 ```
@@ -99,12 +100,11 @@ When running the `main.py` script, you can customize the behavior of the pipelin
 
 
 ### Using modules
-To run any component of the library, you can use the `main` included in each one. For instance, use the following to run the `extractor`:
+To run any component of the library, you can use the `main` included in each one. For instance, use the following (from the project root folder) to run the `extractor`:
 
 ```bash
-cd pytopicgram
-python extractor.py \
-    --file results/messages_nlp.csv \
+python -m pytopicgram.extractor \
+    --file ./results/messages_nlp.csv \
     --column message_nlp \
     --output model.pkl \
     --openai_key <OPENAI_KEY> \
@@ -113,16 +113,15 @@ python extractor.py \
 
 In the `examples` folder, you can find examples of running individual components of the pipeline. For instance, `snowball.py` demonstrates how to use the snowball technique to gather messages from related channels.
 
-To run the `snowball.py` example, use the following command:
+To run the `snowball.py` example, use the following command (from the project root folder):
 
 ```bash
-cd pytopicgram
-python -m examples.snowball \
+python -m pytopicgram.examples.snowball \
    --api_id <TELEGRAM_API_ID> --api_hash <TELEGRAM_API_HASH> \
    --start_date 2024-08-30T00:00:00+00:00 --end_date 2024-08-31T23:59:59+00:00 \
-   --channels_file ./examples/snowball_channels_sample.csv \
-   --output_channels_file ./examples/results/snowball_channels.csv \
-   --output_messages_file ./examples/results/snowball_messages.json \
+   --channels_file ./pytopicgram/examples/snowball_channels_sample.csv \
+   --output_channels_file ./results/snowball_channels.csv \
+   --output_messages_file ./results/snowball_messages.json \
    --max_rounds 3
 ```
 
