@@ -7,6 +7,7 @@ name = "pytopicgram"
 version = "0.1.0"
 description = "Un paquete para análisis de tópicos"
 authors = [{name = "SAIL", email = "sail@ugr.es"}]
+readme = "README.md"
 dependencies = [
     "sphinx",
     "pandas",
@@ -41,3 +42,6 @@ classifiers=[
 
 [tool.setuptools]
 packages = ["pytopicgram"]
+
+[project.scripts]
+pytopicgram = "pytopicgram.main:main"
