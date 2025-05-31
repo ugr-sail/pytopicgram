@@ -1,6 +1,0 @@
-pytopicgram.metrics\_calculator.virality
-========================================
-
-.. currentmodule:: pytopicgram.metrics_calculator
-
-.. autofunction:: virality

@@ -1,6 +1,0 @@
-pytopicgram.preprocessor.main
-=============================
-
-.. currentmodule:: pytopicgram.preprocessor
-
-.. autofunction:: main

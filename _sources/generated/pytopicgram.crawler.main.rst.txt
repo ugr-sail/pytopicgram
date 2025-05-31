@@ -1,6 +1,0 @@
-pytopicgram.crawler.main
-========================
-
-.. currentmodule:: pytopicgram.crawler
-
-.. autofunction:: main

@@ -1,6 +1,0 @@
-pytopicgram.preprocessor.read\_dataframe\_from\_json\_file
-==========================================================
-
-.. currentmodule:: pytopicgram.preprocessor
-
-.. autofunction:: read_dataframe_from_json_file
